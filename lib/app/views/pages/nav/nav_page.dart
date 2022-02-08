@@ -11,33 +11,43 @@ class NavPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Obx(() => Center(
             child: navPages[NavController.to.selectedIndex.value], // 페이지와 연결
           )),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home_outlined,
-              ),
-              label: 'home'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.chat_bubble_outline,
-              ),
-              label: 'chat'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.emoji_emotions_outlined,
-              ),
-              label: 'my'),
-        ],
-        currentIndex: NavController.to.selectedIndex.value,
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          backgroundColor: Colors.white,
 
-        onTap: (index) => {NavController.to.selectedIndex(index)},
-        showSelectedLabels: false, //(1)
-        showUnselectedLabels: false, //(1)
-        type: BottomNavigationBarType.fixed, //(2)
+          items: [
+            BottomNavigationBarItem(
+                icon: NavController.to.selectedIndex.value == 0
+                    ? Image.asset("assets/home-click.png")
+                    : Image.asset("assets/home.png"),
+                label: 'home'),
+            BottomNavigationBarItem(
+                icon: NavController.to.selectedIndex.value == 1
+                    ? Image.asset("assets/chat-click.png")
+                    : Image.asset("assets/chat.png"),
+                label: 'chat'),
+            BottomNavigationBarItem(
+                icon: NavController.to.selectedIndex.value == 2
+                    ? Image.asset("assets/mypage-click.png")
+                    : Image.asset("assets/mypage.png"),
+                label: 'chat'),
+            // BottomNavigationBarItem(
+            //     icon: Icon(
+            //       Icons.emoji_emotions_outlined,
+            //     ),
+            //     label: 'my'),
+          ],
+          currentIndex: NavController.to.selectedIndex.value,
+
+          onTap: (index) => {NavController.to.selectedIndex(index)},
+          showSelectedLabels: false, //(1)
+          showUnselectedLabels: false, //(1)
+          type: BottomNavigationBarType.fixed, //(2)
+        ),
       ),
     );
   }

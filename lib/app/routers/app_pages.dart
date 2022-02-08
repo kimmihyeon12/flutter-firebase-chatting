@@ -1,4 +1,5 @@
 import 'package:chatting_app/app/binding/NavBinding.dart';
+import 'package:chatting_app/app/views/pages/nav/add_user_page.dart';
 import 'package:chatting_app/app/views/pages/nav/home_page.dart';
 import 'package:chatting_app/app/views/pages/introduction_page.dart';
 import 'package:chatting_app/app/views/pages/login_page.dart';
@@ -22,6 +23,11 @@ class AppPages {
     GetPage(
       name: Routes.LOGIN,
       page: () => LoginPage(),
+      // binding: LoginBinding(),
+    ),
+    GetPage(
+      name: Routes.ADDUSER,
+      page: () => AddUserPage(),
       // binding: LoginBinding(),
     ),
   ];

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>993283919286-711p5hg1un409iaao86a4c7oerd74rd7.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.993283919286-711p5hg1un409iaao86a4c7oerd74rd7</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>993283919286-do8o0aro2js67j514h74pfdu2cs4qrdc.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB-Am-YURZIffMM4gQDr2bRTcz_jbgEapA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>993283919286</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.hohocompany.chattingApp</string>
+	<key>PROJECT_ID</key>
+	<string>chat-19105</string>
+	<key>STORAGE_BUCKET</key>
+	<string>chat-19105.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:993283919286:ios:c6f3ec061c13656049c517</string>
+</dict>
+</plist>
