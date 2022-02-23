@@ -12,8 +12,9 @@ class NavPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Obx(() => Center(
-            child: navPages[NavController.to.selectedIndex.value], // 페이지와 연결
+      body: Obx(() => IndexedStack(
+            index: NavController.to.selectedIndex.value,
+            children: navPages, // 페이지와 연결
           )),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(

@@ -48,10 +48,6 @@ class HomePage extends StatelessWidget {
                       child:
                           ListView(scrollDirection: Axis.horizontal, children: [
                         InkWell(
-                          onTap: () {
-                            authC.streamChatsAll(
-                                authC.user.value.email.toString());
-                          },
                           child: Container(
                               width: Get.width * 0.15,
                               child: Image.asset(

@@ -142,7 +142,7 @@ class AuthController extends GetxController {
     Get.offAllNamed(Routes.LOGIN);
   }
 
-  Future<void> insertfollowUser(email, frendEmail) async {
+  Future<void> createfollowUser(email, frendEmail) async {
     CollectionReference users = firestore.collection('users');
     await users.doc(email).collection("follow").doc(frendEmail).set({
       "lastTime": 000,
@@ -150,31 +150,46 @@ class AuthController extends GetxController {
     await users.doc(frendEmail).collection("follow").doc(email).set({
       "lastTime": 000,
     });
-    userFollowJoin(email);
+    await userFollowJoin(email);
     Get.back();
   }
 
-  userFollowJoin(email) async {
+  //FOLLOW
+  Future userFollowJoin(email) async {
     var usersData = [];
     CollectionReference users = firestore.collection('users');
     final followList = await users.doc(email).collection("follow").get();
+    var emailList = [];
+    followList.docs.forEach((list) {
+      emailList.add(list.id);
+    });
+
+    usersData = await firebaseUserJoin(emailList);
+
+    user.update((user) {
+      user!.followUser = usersData;
+    });
+    user.refresh();
+  }
+
+  //유저이메일과 유저정보 조인
+  Future firebaseUserJoin(emailList) async {
+    CollectionReference users = firestore.collection('users');
     final userList = await users.get();
+    var usersData = [];
     userList.docs.forEach((user) {
-      followList.docs.forEach((follow) {
-        if (user.id == follow.id) {
+      emailList.forEach((email) {
+        if (user.id == email) {
           final userMap = user.data() as Map<String, dynamic>;
           usersData.add(UsersModel.fromJson(userMap));
         }
       });
     });
-    user.update((user) {
-      user!.followUser = usersData;
-    });
 
-    user.refresh();
+    return usersData;
   }
 
-  getListChat() async {
+  Future getListChat() async {
     CollectionReference users = firestore.collection("users");
     final listChats =
         await users.doc(user.value.email).collection("chats").get();
@@ -230,12 +245,9 @@ class AuthController extends GetxController {
           .set({
         "connection": friendEmail,
         "lastTime": date,
-        "total_unread": 0,
+        "create_status": false,
       });
 
-      // 채팅방 배열 가져오기!
-
-      user.refresh();
       Get.toNamed(
         Routes.CHATROOM,
         arguments: {
@@ -250,6 +262,21 @@ class AuthController extends GetxController {
       await getListChat();
       var _chatid;
       checkConnection.docs.forEach((e) => {_chatid = e.id});
+      final updateStatusChat = await chats
+          .doc(_chatid)
+          .collection("chat")
+          .where("isRead", isEqualTo: false)
+          .where("recipient", isEqualTo: user.value.email)
+          .get();
+
+      updateStatusChat.docs.forEach((element) async {
+        await chats
+            .doc(_chatid)
+            .collection("chat")
+            .doc(element.id)
+            .update({"isRead": true});
+      });
+
       Get.toNamed(
         Routes.CHATROOM,
         arguments: {
@@ -259,35 +286,5 @@ class AuthController extends GetxController {
         },
       );
     }
-  }
-
-  void streamChatsAll(String email) async {
-    print(email);
-    var chatList = [];
-    var mychat = await firestore
-        .collection('chats')
-        .where('connections', arrayContainsAny: [email]).get();
-    mychat.docs.forEach((data) async {
-      var chat = await firestore
-          .collection('chats')
-          .doc(data.id)
-          .collection("chat")
-          .get();
-      if (chat.docs.isNotEmpty) {
-        var resultChat = await firestore
-            .collection('chats')
-            .doc(data.id)
-            .collection("chat")
-            .orderBy("time", descending: true)
-            .limit(1)
-            .get();
-        // if(resultChat.docs[0].data()["sender"]==email){
-        //   chatList.add({
-        //     msg:
-        //   })
-        // }
-        print(resultChat.docs[0].data());
-      }
-    });
   }
 }

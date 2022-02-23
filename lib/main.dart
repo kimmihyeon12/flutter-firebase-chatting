@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return Obx(
             () => GetMaterialApp(
+              debugShowCheckedModeBanner: false,
               title: "chatApp",
               theme: ThemeData(
                 brightness: Brightness.light,

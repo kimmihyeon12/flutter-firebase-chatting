@@ -63,7 +63,6 @@ class ChatRoomPage extends GetView<ChatController> {
                         if (snapshot.connectionState ==
                             ConnectionState.active) {
                           var alldata = snapshot.data!.docs;
-
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: ListView.builder(

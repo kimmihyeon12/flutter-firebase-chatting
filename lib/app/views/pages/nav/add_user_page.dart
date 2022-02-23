@@ -124,7 +124,7 @@ class AddUserPage extends GetView<SearchController> {
                                   ),
                                   InkWell(
                                     onTap: () async {
-                                      await authC.insertfollowUser(
+                                      await authC.createfollowUser(
                                           authC.user.value.email!,
                                           controller.searchUser[index]
                                               ["email"]);

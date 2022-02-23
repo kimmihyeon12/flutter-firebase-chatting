@@ -14,10 +14,9 @@ import 'app_routes.dart';
 class AppPages {
   static final routes = [
     GetPage(
-      name: Routes.Nav,
-      page: () => NavPage(),
-      binding: NavBinding(),
-    ),
+        name: Routes.Nav,
+        page: () => NavPage(),
+        bindings: [NavBinding(), ChatBinding()]),
     GetPage(
       name: Routes.INTRODUCTION,
       page: () => IntroductionPage(),
