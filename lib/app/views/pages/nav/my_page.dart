@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MyPage extends StatelessWidget {
-  const MyPage({Key? key}) : super(key: key);
-
+  final authC = AuthController.to;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -47,6 +46,12 @@ class MyPage extends StatelessWidget {
                   fontL("김미현", fonts: "NeoB"),
                   Padding(padding: EdgeInsets.only(top: Get.height * 0.005)),
                   fontM("2_5_3_1@naver.com", color: 0xff707070),
+                  InkWell(
+                    child: fontM("로그아웃", color: 0xff707070),
+                    onTap: () async {
+                      await authC.logout();
+                    },
+                  ),
                 ],
               ),
             ),

@@ -38,8 +38,8 @@ class LoginPage extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                     onTap: () {
-                      print("kakao login");
-                      Get.offAllNamed(Routes.Nav);
+                      // print("kakao login");
+                      // Get.offAllNamed(Routes.Nav);
                     },
                   ),
                   Padding(padding: EdgeInsets.only(right: Get.height * 0.03)),
@@ -50,8 +50,7 @@ class LoginPage extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                     onTap: () {
-                      print("google login");
-                      Get.offAllNamed(Routes.Nav);
+                      authC.login();
                     },
                   ),
                 ],

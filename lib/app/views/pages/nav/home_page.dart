@@ -1,11 +1,12 @@
 import 'package:chatting_app/app/controller/AuthController.dart';
 import 'package:chatting_app/app/routers/app_routes.dart';
 import 'package:chatting_app/app/views/widgets/font.dart';
+import 'package:chatting_app/app/views/widgets/profileImage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final authC = AuthController.to;
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +47,18 @@ class HomePage extends StatelessWidget {
                       height: Get.height * 0.07,
                       child:
                           ListView(scrollDirection: Axis.horizontal, children: [
-                        Container(
-                            width: Get.width * 0.15,
-                            child: Image.asset(
-                              "assets/user-add.png",
-                              width: Get.width * 0.14,
-                            )),
+                        InkWell(
+                          onTap: () {
+                            authC.streamChatsAll(
+                                authC.user.value.email.toString());
+                          },
+                          child: Container(
+                              width: Get.width * 0.15,
+                              child: Image.asset(
+                                "assets/user-add.png",
+                                width: Get.width * 0.14,
+                              )),
+                        ),
                         Container(
                             width: Get.width * 0.15,
                             child: Image.asset(
@@ -108,147 +115,74 @@ class HomePage extends StatelessWidget {
               Divider(),
 
               //my
-              Padding(
-                padding: EdgeInsets.only(
-                    left: Get.width * 0.05,
-                    top: Get.height * 0.01,
-                    bottom: Get.height * 0.01),
-                child: Row(
-                  children: [
-                    Image.asset("assets/user-bg-02.png",
-                        width: Get.width * 0.15,
-                        height: Get.width * 0.15,
-                        fit: BoxFit.cover),
-                    Padding(padding: EdgeInsets.only(left: Get.width * 0.03)),
-                    fontS("김미현", color: 0xff707070),
-                  ],
+              Obx(
+                () => Padding(
+                  padding: EdgeInsets.only(
+                      left: Get.width * 0.05,
+                      top: Get.height * 0.01,
+                      bottom: Get.height * 0.01),
+                  child: Row(
+                    children: [
+                      profileImage(Get.width * 0.15,
+                          image: authC.user.value.photoUrl!),
+                      Padding(padding: EdgeInsets.only(left: Get.width * 0.03)),
+                      fontS(authC.user.value.name!, color: 0xff707070),
+                    ],
+                  ),
                 ),
               ),
               //friend
-              Padding(
-                padding: EdgeInsets.only(
-                  left: Get.width * 0.05,
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        fontS("친구 ", color: 0xff707070),
-                        fontS("234", color: 0xff707070, fonts: "NeoB"),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                    Row(
-                      children: [
-                        Image.asset("assets/user-bg-02.png",
-                            width: Get.width * 0.12, fit: BoxFit.cover),
-                        Padding(
-                            padding: EdgeInsets.only(left: Get.width * 0.03)),
-                        fontS("김미현", color: 0xff707070),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                    Row(
-                      children: [
-                        Image.asset("assets/user-bg-02.png",
-                            width: Get.width * 0.12, fit: BoxFit.cover),
-                        Padding(
-                            padding: EdgeInsets.only(left: Get.width * 0.03)),
-                        fontS("김미현", color: 0xff707070),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                    Row(
-                      children: [
-                        Image.asset("assets/user-bg-02.png",
-                            width: Get.width * 0.12, fit: BoxFit.cover),
-                        Padding(
-                            padding: EdgeInsets.only(left: Get.width * 0.03)),
-                        fontS("김미현", color: 0xff707070),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                    Row(
-                      children: [
-                        Image.asset("assets/user-bg-02.png",
-                            width: Get.width * 0.12, fit: BoxFit.cover),
-                        Padding(
-                            padding: EdgeInsets.only(left: Get.width * 0.03)),
-                        fontS("김미현", color: 0xff707070),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                    Row(
-                      children: [
-                        Image.asset("assets/user-bg-02.png",
-                            width: Get.width * 0.12, fit: BoxFit.cover),
-                        Padding(
-                            padding: EdgeInsets.only(left: Get.width * 0.03)),
-                        fontS("김미현", color: 0xff707070),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                    Row(
-                      children: [
-                        Image.asset("assets/user-bg-02.png",
-                            width: Get.width * 0.12, fit: BoxFit.cover),
-                        Padding(
-                            padding: EdgeInsets.only(left: Get.width * 0.03)),
-                        fontS("김미현", color: 0xff707070),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                    Row(
-                      children: [
-                        Image.asset("assets/user-bg-02.png",
-                            width: Get.width * 0.12, fit: BoxFit.cover),
-                        Padding(
-                            padding: EdgeInsets.only(left: Get.width * 0.03)),
-                        fontS("김미현", color: 0xff707070),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                    Row(
-                      children: [
-                        Image.asset("assets/user-bg-02.png",
-                            width: Get.width * 0.12, fit: BoxFit.cover),
-                        Padding(
-                            padding: EdgeInsets.only(left: Get.width * 0.03)),
-                        fontS("김미현", color: 0xff707070),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                    Row(
-                      children: [
-                        Image.asset("assets/user-bg-02.png",
-                            width: Get.width * 0.12, fit: BoxFit.cover),
-                        Padding(
-                            padding: EdgeInsets.only(left: Get.width * 0.03)),
-                        fontS("김미현", color: 0xff707070),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                    Row(
-                      children: [
-                        Image.asset("assets/user-bg-02.png",
-                            width: Get.width * 0.12, fit: BoxFit.cover),
-                        Padding(
-                            padding: EdgeInsets.only(left: Get.width * 0.03)),
-                        fontS("김미현", color: 0xff707070),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                    Row(
-                      children: [
-                        Image.asset("assets/user-bg-02.png",
-                            width: Get.width * 0.12, fit: BoxFit.cover),
-                        Padding(
-                            padding: EdgeInsets.only(left: Get.width * 0.03)),
-                        fontS("김미현", color: 0xff707070),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                  ],
+              Obx(
+                () => Padding(
+                  padding: EdgeInsets.only(
+                    left: Get.width * 0.05,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          fontS("친구 ", color: 0xff707070),
+                          fontS("${authC.user.value.followUser?.length}",
+                              color: 0xff707070, fonts: "NeoB"),
+                        ],
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: Get.height,
+                        child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: authC.user.value.followUser?.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Padding(
+                                padding:
+                                    EdgeInsets.only(top: Get.height * 0.01),
+                                child: InkWell(
+                                  onTap: () {
+                                    authC.createFirebaseChatRoom(
+                                        authC.user.value.followUser?[index]
+                                            .email,
+                                        authC.user.value.followUser?[index]
+                                            .name);
+                                  },
+                                  child: Row(
+                                    children: [
+                                      profileImage(Get.width * 0.12,
+                                          image:
+                                              "${authC.user.value.followUser?[index].photoUrl ?? "https://w.namu.la/s/c4b8eb1c9ea25c0e252b81e3aab503097fdd7a7ae00acdba6f86da4e46ad5e3629335e1022104c01db12954074159679a427e9d4f2e0519db064e4203dec3dc04fdbf124789ea8400b3e6793f77a221e"}"),
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                              left: Get.width * 0.03)),
+                                      fontS(
+                                          "${authC.user.value.followUser?[index].name}",
+                                          color: 0xff707070),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],

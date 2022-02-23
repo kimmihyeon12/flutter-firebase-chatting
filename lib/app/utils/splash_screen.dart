@@ -16,6 +16,7 @@ class SplashScreen extends StatelessWidget {
               "assets/background.jpg",
               fit: BoxFit.fill,
               width: Get.width + 20,
+              height: Get.height,
             ),
             Center(
               child: Image.asset(

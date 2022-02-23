@@ -16,6 +16,7 @@ class UsersModel {
     this.photoUrl,
     this.status,
     this.updatedTime,
+    this.followUser,
     this.chats,
   });
 
@@ -28,7 +29,8 @@ class UsersModel {
   String? photoUrl;
   String? status;
   String? updatedTime;
-  List<ChatUser>? chats;
+  List? followUser;
+  List? chats;
 
   factory UsersModel.fromJson(Map<String, dynamic> json) => UsersModel(
         uid: json["uid"],
