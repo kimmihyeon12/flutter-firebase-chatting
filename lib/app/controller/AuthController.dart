@@ -1,8 +1,10 @@
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chatting_app/app/data/model/user_model.dart';
 import 'package:chatting_app/app/routers/app_routes.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,7 +12,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthController extends GetxController {
   static AuthController get to => Get.find();
   var isSkipIntro = true.obs; // intro 보여줄시 false
-  var isAuth = false.obs;
+  var isAutoLogin = false.obs;
   // ignore: prefer_final_fields, unused_field
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -18,68 +20,42 @@ class AuthController extends GetxController {
 
   Future firstInitialized() async {
     print("로딩중...");
-    await skipIntro().then((value) => {
-          if (value) {isSkipIntro(true)}
-        });
-    await autoLogin().then((value) => {
-          if (value) {isAuth(true)}
-        });
-  }
-
-  Future skipIntro() async {
     final box = GetStorage();
-    //이미 인트로 본 경우
     if (box.read('skipIntro') == true) {
-      return true;
+      isSkipIntro(true);
     }
-    return false;
+    if (box.read('loginStatus') != null) {
+      autoLogin();
+      isAutoLogin(true);
+    }
   }
 
+  //자동로그인
   Future autoLogin() async {
-    try {
-      final isSignIn = await _googleSignIn.isSignedIn();
-      //로그인 되어있을 경우에만 실행!!!!
-      if (isSignIn) {
-        final currentUser = await googleFirebaseSign(true);
-        print("currentUser");
-        print(currentUser);
-        CollectionReference users = firestore.collection('users');
-        await users.doc(currentUser!.user.email).update({
-          "lastSignInTime":
-              currentUser!.user!.metadata.lastSignInTime!.toIso8601String(),
-        });
-        // user 정보 얻어오기 ()
-        await getUser(users, currentUser!.user.email);
-        await userFollowJoin(currentUser!.user.email);
-        await getListChat();
-        return true;
-      }
-      return false;
-    } catch (e) {
-      return false;
-    }
+    final box = GetStorage();
+    var email = box.read('loginStatus');
+    CollectionReference users = firestore.collection('users');
+    // user 정보 얻어오기 ()
+    await getUser(users, email);
+    await userFollowJoin(email);
+    await getListChat();
+    return true;
   }
 
+  //그냥 로그인
   Future login() async {
-    final currentUser = await googleFirebaseSign(false);
-    print("currentUser");
-    print(currentUser);
-    print(currentUser!.user.email);
-    print(currentUser!.user);
-    print(currentUser!.user.displayName);
+    final currentUser = await googleFirebaseSign();
     //로그인시 skip
     final box = GetStorage();
     box.write('skipIntro', true);
     CollectionReference users = firestore.collection('users');
-
     final checkuser = await users.doc(currentUser!.user.email).get();
-
+    print(currentUser!.user.photoURL);
     //이메일 storage에 존재하지 않으면
     if (checkuser.data() == null) {
       await users.doc(currentUser!.user.email).set({
         "uid": currentUser!.user!.uid,
         "name": currentUser!.user.displayName,
-        // "keyName": currentUser!.family_name.toUpperCase(),
         "email": currentUser!.user.email,
         "photoUrl": currentUser!.user.photoURL ?? "noimage",
         "status": "",
@@ -97,48 +73,42 @@ class AuthController extends GetxController {
             currentUser!.user!.metadata.lastSignInTime!.toIso8601String(),
       });
     }
-    // user 정보 얻어오기 ()
+    // user 정보 얻어오기
     await getUser(users, currentUser!.user.email);
     await userFollowJoin(currentUser!.user.email);
     await getListChat();
+    box.write('loginStatus', currentUser!.user.email);
     Get.offAllNamed(Routes.Nav);
   }
 
   Future getUser(users, email) async {
     final currUser = await users.doc(email).get();
     final currUserData = currUser.data() as Map<String, dynamic>;
-    print("getUser");
     print(currUserData);
     user(UsersModel.fromJson(currUserData));
     user.refresh();
-    isAuth(true);
   }
 
-  Future googleFirebaseSign(auto) async {
-    if (!auto) {
-      await _googleSignIn.signOut();
-    }
-
+  Future googleFirebaseSign() async {
+    await _googleSignIn.signOut();
     // signInSilently 창 안띄우고 login // signIn 창띄우고 로그인
-    final currentUser = auto
-        ? await _googleSignIn.signInSilently()
-        : await _googleSignIn.signIn();
+    final currentUser = await _googleSignIn.signIn();
     final googleAuth = await currentUser!.authentication;
     final credential = GoogleAuthProvider.credential(
       idToken: googleAuth.idToken,
       accessToken: googleAuth.accessToken,
     );
-
     //firebase login
     final userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
-
     return userCredential;
   }
 
   Future<void> logout() async {
+    final box = GetStorage();
     await _googleSignIn.disconnect();
     await _googleSignIn.signOut();
+    box.write('loginStatus', null);
     Get.offAllNamed(Routes.LOGIN);
   }
 
@@ -218,7 +188,7 @@ class AuthController extends GetxController {
 
   createFirebaseChatRoom(String friendEmail, String friendName) async {
     print("addFirebaseChat");
-    String date = DateTime.now().toIso8601String();
+    DateTime date = await (DateTime.now().toUtc().add(Duration(hours: 9)));
     CollectionReference chats = firestore.collection("chats");
     CollectionReference users = firestore.collection("users");
 
@@ -276,7 +246,14 @@ class AuthController extends GetxController {
             .doc(element.id)
             .update({"isRead": true});
       });
-
+      await users
+          .doc(user.value.email)
+          .collection("chats")
+          .doc(_chatid)
+          .update({
+        "lastTime": date.toString(),
+        "create_status": true,
+      });
       Get.toNamed(
         Routes.CHATROOM,
         arguments: {
@@ -285,6 +262,50 @@ class AuthController extends GetxController {
           "friendName": friendName
         },
       );
+    }
+  }
+
+  profileImageUpdate(option, background) async {
+    final _image;
+    final picker = ImagePicker();
+    var pickedFile;
+    if (option == "gallery") {
+      pickedFile =
+          await picker.getImage(source: ImageSource.gallery, imageQuality: 50);
+    }
+    if (option == "camera") {
+      pickedFile =
+          await picker.getImage(source: ImageSource.camera, imageQuality: 50);
+    }
+
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
+      if (_image != null) {
+        final storageReference = FirebaseStorage.instance
+            .ref()
+            .child("post/${DateTime.now().millisecondsSinceEpoch}");
+        var storageUploadTask = await storageReference.putFile(_image!);
+        String photoUrl = await storageReference.getDownloadURL();
+        if (background) {
+          await firestore
+              .collection("users")
+              .doc(user.value.email)
+              .update({"backgroundImgUrl": photoUrl});
+          user.update((user) {
+            user!.backgroundImgUrl = photoUrl;
+          });
+        } else {
+          await firestore
+              .collection("users")
+              .doc(user.value.email)
+              .update({"photoUrl": photoUrl});
+          user.update((user) {
+            user!.photoUrl = photoUrl;
+          });
+        }
+
+        user.refresh();
+      }
     }
   }
 }

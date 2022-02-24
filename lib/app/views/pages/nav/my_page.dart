@@ -18,7 +18,7 @@ class MyPage extends StatelessWidget {
             elevation: 0.3,
           ),
           body: SingleChildScrollView(
-            child: Center(
+            child: Container(
               child: Column(
                 children: [
                   Padding(padding: EdgeInsets.only(top: Get.height * 0.04)),

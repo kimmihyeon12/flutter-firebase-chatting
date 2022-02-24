@@ -10,7 +10,6 @@ class ChatPage extends GetView<ChatController> {
   final authC = AuthController.to;
   @override
   Widget build(BuildContext context) {
-    print("chatpage");
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -112,30 +111,37 @@ class ChatPage extends GetView<ChatController> {
                                             children: [
                                               fontS(
                                                 "${snapshot.data[index]["time"]}",
-                                                color: 0xff707070,
+                                                color: 0xff9a9a9a,
                                               ),
                                               Padding(
                                                   padding: EdgeInsets.only(
                                                       top: Get.height * 0.002)),
-                                              Container(
-                                                  child: Container(
-                                                      padding: EdgeInsets.only(
-                                                          left: 7,
-                                                          right: 7,
-                                                          bottom: 1),
-                                                      child: fontS(
-                                                          "${snapshot.data[index]["un_read"]}",
-                                                          color: 0xffffffff)),
-                                                  decoration: BoxDecoration(
-                                                      color: Color(0xffff2057),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50),
-                                                      //모서리를 둥글게
-                                                      border: Border.all(
+                                              snapshot.data[index]["un_read"] ==
+                                                      0
+                                                  ? Text(" ")
+                                                  : Container(
+                                                      child: Container(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  left: 6,
+                                                                  right: 6,
+                                                                  bottom: 3,
+                                                                  top: 1),
+                                                          child: fontSM(
+                                                              "${snapshot.data[index]["un_read"]}",
+                                                              color:
+                                                                  0xffffffff)),
+                                                      decoration: BoxDecoration(
                                                           color:
                                                               Color(0xffff2057),
-                                                          width: 1))),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(50),
+                                                          //모서리를 둥글게
+                                                          border: Border.all(
+                                                              color: Color(
+                                                                  0xffff2057),
+                                                              width: 1))),
                                             ],
                                           ),
                                         ],

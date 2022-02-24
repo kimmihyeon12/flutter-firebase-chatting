@@ -14,6 +14,7 @@ class UsersModel {
     this.creationTime,
     this.lastSignInTime,
     this.photoUrl,
+    this.backgroundImgUrl,
     this.status,
     this.updatedTime,
     this.followUser,
@@ -27,6 +28,7 @@ class UsersModel {
   String? creationTime;
   String? lastSignInTime;
   String? photoUrl;
+  String? backgroundImgUrl;
   String? status;
   String? updatedTime;
   List? followUser;
@@ -40,6 +42,7 @@ class UsersModel {
         creationTime: json["creationTime"],
         lastSignInTime: json["lastSignInTime"],
         photoUrl: json["photoUrl"],
+        backgroundImgUrl: json["backgroundImgUrl"],
         status: json["status"],
         updatedTime: json["updatedTime"],
       );
@@ -52,6 +55,7 @@ class UsersModel {
         "creationTime": creationTime,
         "lastSignInTime": lastSignInTime,
         "photoUrl": photoUrl,
+        "backgroundImgUrl": backgroundImgUrl,
         "status": status,
         "updatedTime": updatedTime,
       };

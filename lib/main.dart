@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
                 buttonColor: Colors.red[900],
               ),
               initialRoute: authC.isSkipIntro.isTrue
-                  ? authC.isAuth.isTrue
+                  ? authC.isAutoLogin.isTrue
                       ? Routes.Nav
                       : Routes.LOGIN
                   : Routes.INTRODUCTION,

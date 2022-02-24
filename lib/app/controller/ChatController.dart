@@ -32,17 +32,9 @@ class ChatController extends GetxController {
     return chat;
   }
 
-  /* Stream<QuerySnapshot<Map<String, dynamic>>> chatsStream(String email) {
-    return firestore
-        .collection('users')
-        .doc(email)
-        .collection("chats")
-        .orderBy("lastTime", descending: true)
-        .snapshots();
-  }*/
   Stream<QuerySnapshot<Map<String, dynamic>>> chatsStream(String email) {
     return firestore
-        .collection('chats')
+        .collection('users')
         .doc(email)
         .collection("chats")
         .orderBy("lastTime", descending: true)
@@ -78,29 +70,27 @@ class ChatController extends GetxController {
           .orderBy("time", descending: true)
           .limit(1)
           .get();
-      var currentTime =
-          new DateTime.now().toString().substring(0, 10).split("-");
+
       var msgTime = lastChat.docs[0]
           .data()["time"]
           .toString()
           .substring(0, 10)
           .split("-");
+      var currentTime = DateTime.now();
+      var pretime = DateTime(
+          int.parse(msgTime[0]), int.parse(msgTime[1]), int.parse(msgTime[2]));
+
       final updateStatusChat = await chats
           .doc(chat.id)
           .collection("chat")
           .where("isRead", isEqualTo: false)
           .where("recipient", isEqualTo: email)
           .get();
-      print("updateStatusChat.docs.length");
-      print(updateStatusChat.docs.length);
+
       var time;
-      if (currentTime[0] == msgTime[0] &&
-          currentTime[1] == msgTime[1] &&
-          currentTime[2] == msgTime[2]) {
+      if (currentTime.difference(pretime).inDays == 0) {
         time = lastChat.docs[0].data()["time"].toString().substring(11, 16);
-      } else if (currentTime[0] == msgTime[0] &&
-          currentTime[1] == msgTime[1] &&
-          int.parse(currentTime[2]) - int.parse(msgTime[2]) == 1) {
+      } else if (currentTime.difference(pretime).inDays == 1) {
         time = "어제";
       } else {
         time = lastChat.docs[0].data()["time"].toString().substring(0, 10);
@@ -112,10 +102,17 @@ class ChatController extends GetxController {
         "friendPhotoUrl": user[0].photoUrl,
         "msg": lastChat.docs[0].data()["msg"],
         "time": time,
+        "datetime": DateTime.parse(lastChat.docs[0].data()["time"]),
         "chat_id": lastChat.docs[0].id,
         "un_read": updateStatusChat.docs.length
       });
     }));
+    print(chatLastList);
+    chatLastList.sort((a, b) {
+      print(a["datetime"].difference(b["datetime"]).inSeconds);
+      return b["datetime"].difference(a["datetime"]).inSeconds;
+    });
+
     return chatLastList;
   }
 

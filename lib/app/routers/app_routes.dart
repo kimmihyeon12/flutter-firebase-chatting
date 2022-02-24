@@ -4,6 +4,7 @@ abstract class Routes {
   static const LOGIN = _Paths.LOGIN;
   static const ADDUSER = _Paths.ADDUSER;
   static const CHATROOM = _Paths.CHATROOM;
+  static const PRORILEDETAIL = _Paths.PRORILEDETAIL;
 }
 
 abstract class _Paths {
@@ -12,4 +13,5 @@ abstract class _Paths {
   static const LOGIN = '/login';
   static const ADDUSER = '/add';
   static const CHATROOM = '/chatroom';
+  static const PRORILEDETAIL = "/profiledetail";
 }

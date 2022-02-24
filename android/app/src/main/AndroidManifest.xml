@@ -1,5 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hohocompany.chatting_app">
+  <queries>
+    <intent>
+          <action android:name="android.media.action.IMAGE_CAPTURE" />
+    </intent>
+  </queries>
+  <uses-permission android:name="android.permission.CAMERA"/>
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
    <application
         android:label="chatting_app"
         android:name="${applicationName}"
@@ -52,5 +60,6 @@
         <action android:name="android.intent.action.SEND" />
         <data android:mimeType="*/*" />
       </intent>
+      
   </queries>
 </manifest>
