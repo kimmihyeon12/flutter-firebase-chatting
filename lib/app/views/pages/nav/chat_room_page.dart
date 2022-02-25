@@ -63,29 +63,40 @@ class ChatRoomPage extends GetView<ChatController> {
                         if (snapshot.connectionState ==
                             ConnectionState.active) {
                           var alldata = snapshot.data!.docs;
+                          var groupTime = "";
+                          Timer(
+                            Duration.zero,
+                            () => controller.scrollC.jumpTo(
+                                controller.scrollC.position.maxScrollExtent),
+                          );
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: ListView.builder(
                                 // 리스트뷰의 스크롤 방향을 반대로 변경. 최신 메시지가 하단에 추가
-                                reverse: true,
+                                // reverse: true,
                                 controller: controller.scrollC,
                                 itemCount: alldata.length,
                                 itemBuilder: (context, index) {
-                                  // if (alldata[index]["groupTime"] ==
-                                  //     alldata[index - 1]["groupTime"]) {
-                                  //   return ChatMessage(
-                                  //     msg: "${alldata[index]["msg"]}",
-                                  //     isSender: alldata[index]["sender"] ==
-                                  //             authC.user.value.email!
-                                  //         ? true
-                                  //         : false,
-                                  //     time: "${alldata[index]["time"]}",
-                                  //   );
-                                  // } else {
                                   return Column(
                                     children: [
-                                      // fontS("${alldata[index]["groupTime"]}",
-                                      //     fonts: "NeoM"),
+                                      (() {
+                                        bool result = false;
+                                        if (groupTime !=
+                                            alldata[index]["groupTime"]) {
+                                          result = true;
+                                          groupTime =
+                                              alldata[index]["groupTime"];
+                                        }
+                                        return result
+                                            ? Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical:
+                                                        Get.height * 0.01),
+                                                child: fontS(
+                                                    "${alldata[index]["groupTime"]}"),
+                                              )
+                                            : Container();
+                                      })(),
                                       ChatMessage(
                                         msg: "${alldata[index]["msg"]}",
                                         isSender: alldata[index]["sender"] ==
@@ -96,7 +107,6 @@ class ChatRoomPage extends GetView<ChatController> {
                                       ),
                                     ],
                                   );
-                                  //}
                                 }),
                           );
                         }

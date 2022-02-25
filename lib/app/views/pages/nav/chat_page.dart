@@ -54,7 +54,6 @@ class ChatPage extends GetView<ChatController> {
                           // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
                           else {
                             return ListView.builder(
-                                controller: controller.scrollC,
                                 itemCount: snapshot.data.length,
                                 itemBuilder: (context, index) {
                                   return Padding(

@@ -1,5 +1,6 @@
 import 'package:chatting_app/app/controller/AuthController.dart';
 import 'package:chatting_app/app/controller/SearchController.dart';
+import 'package:chatting_app/app/views/widgets/addFriendBtn.dart';
 import 'package:chatting_app/app/views/widgets/font.dart';
 import 'package:chatting_app/app/views/widgets/profileImage.dart';
 import 'package:chatting_app/app/views/widgets/snackbar.dart';
@@ -122,28 +123,8 @@ class AddUserPage extends GetView<SearchController> {
                                       ],
                                     ),
                                   ),
-                                  InkWell(
-                                    onTap: () async {
-                                      await authC.createfollowUser(
-                                          authC.user.value.email!,
-                                          controller.searchUser[index]
-                                              ["email"]);
-                                    },
-                                    child: Container(
-                                        child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 5),
-                                            child: fontSM("친구추가",
-                                                color: 0xffffffff,
-                                                fonts: "NotoB")),
-                                        decoration: BoxDecoration(
-                                            color: Color(0xffff7282),
-                                            borderRadius: BorderRadius.circular(
-                                                50), //모서리를 둥글게
-                                            border: Border.all(
-                                                color: Color(0xffff7282),
-                                                width: 1))),
-                                  ),
+                                  AddFreindBtn(
+                                      controller.searchUser[index]["email"]),
                                 ],
                               ),
                             ),

@@ -17,7 +17,7 @@ class AuthController extends GetxController {
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   var user = UsersModel().obs;
-
+  var recommendUserList = [].obs;
   Future firstInitialized() async {
     print("로딩중...");
     final box = GetStorage();
@@ -39,7 +39,7 @@ class AuthController extends GetxController {
     await getUser(users, email);
     await userFollowJoin(email);
     await getListChat();
-    return true;
+    await getRecommendUser();
   }
 
   //그냥 로그인
@@ -50,7 +50,7 @@ class AuthController extends GetxController {
     box.write('skipIntro', true);
     CollectionReference users = firestore.collection('users');
     final checkuser = await users.doc(currentUser!.user.email).get();
-    print(currentUser!.user.photoURL);
+    DateTime date = await (DateTime.now().toUtc().add(Duration(hours: 9)));
     //이메일 storage에 존재하지 않으면
     if (checkuser.data() == null) {
       await users.doc(currentUser!.user.email).set({
@@ -59,32 +59,28 @@ class AuthController extends GetxController {
         "email": currentUser!.user.email,
         "photoUrl": currentUser!.user.photoURL ?? "noimage",
         "status": "",
-        "creationTime":
-            currentUser!.user!.metadata.creationTime!.toIso8601String(),
-        "lastSignInTime":
-            currentUser!.user!.metadata.lastSignInTime!.toIso8601String(),
+        "creationTime": date,
+        "lastSignInTime": date,
         "updatedTime": DateTime.now().toIso8601String(),
       });
     }
     //이메일 storage에 존재하면 (로그인후 로그아웃한 경우)
     else {
-      await users.doc(currentUser!.user.email).update({
-        "lastSignInTime":
-            currentUser!.user!.metadata.lastSignInTime!.toIso8601String(),
-      });
+      await users.doc(currentUser!.user.email).update({"lastSignInTime": date});
     }
     // user 정보 얻어오기
     await getUser(users, currentUser!.user.email);
     await userFollowJoin(currentUser!.user.email);
     await getListChat();
+    await getRecommendUser();
     box.write('loginStatus', currentUser!.user.email);
+
     Get.offAllNamed(Routes.Nav);
   }
 
   Future getUser(users, email) async {
     final currUser = await users.doc(email).get();
     final currUserData = currUser.data() as Map<String, dynamic>;
-    print(currUserData);
     user(UsersModel.fromJson(currUserData));
     user.refresh();
   }
@@ -106,13 +102,14 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     final box = GetStorage();
-    await _googleSignIn.disconnect();
+    //  await _googleSignIn.disconnect();
     await _googleSignIn.signOut();
     box.write('loginStatus', null);
     Get.offAllNamed(Routes.LOGIN);
   }
 
-  Future<void> createfollowUser(email, frendEmail) async {
+  Future<void> createfollowUser(frendEmail) async {
+    String? email = user.value.email;
     CollectionReference users = firestore.collection('users');
     await users.doc(email).collection("follow").doc(frendEmail).set({
       "lastTime": 000,
@@ -120,7 +117,9 @@ class AuthController extends GetxController {
     await users.doc(frendEmail).collection("follow").doc(email).set({
       "lastTime": 000,
     });
+
     await userFollowJoin(email);
+    await getRecommendUser();
     Get.back();
   }
 
@@ -130,9 +129,9 @@ class AuthController extends GetxController {
     CollectionReference users = firestore.collection('users');
     final followList = await users.doc(email).collection("follow").get();
     var emailList = [];
-    followList.docs.forEach((list) {
+    for (var list in followList.docs) {
       emailList.add(list.id);
-    });
+    }
 
     usersData = await firebaseUserJoin(emailList);
 
@@ -171,8 +170,7 @@ class AuthController extends GetxController {
         dataListChats.add(ChatUser(
           chatId: dataDocChatId,
           connection: dataDocChat["connection"],
-          lastTime: dataDocChat["lastTime"],
-          total_unread: dataDocChat["total_unread"],
+          lastTime: dataDocChat["lastTime"].toString(),
         ));
       });
 
@@ -307,5 +305,32 @@ class AuthController extends GetxController {
         user.refresh();
       }
     }
+  }
+
+//나와 나의 follow에 있는사람을 제외한 20명 추천!
+  getRecommendUser() async {
+    recommendUserList([]);
+    var userList = await firestore
+        .collection("users")
+        .orderBy("creationTime", descending: true)
+        .limit(20)
+        .get();
+    var follows = user.value.followUser;
+    var result = false;
+    userList.docs.forEach((data) {
+      result = false;
+      final userMap = data.data() as Map<String, dynamic>;
+      for (int i = 0; i < follows!.length; i++) {
+        if (userMap["email"] == user.value.email ||
+            userMap["email"] == follows[i].email) {
+          result = true;
+        }
+      }
+      if (!result) {
+        recommendUserList.add(UsersModel.fromJson(userMap));
+      }
+    });
+    recommendUserList.refresh();
+    print('recommendUserList.length ${recommendUserList.length}');
   }
 }

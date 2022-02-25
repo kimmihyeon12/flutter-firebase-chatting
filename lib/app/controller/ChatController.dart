@@ -18,17 +18,12 @@ class ChatController extends GetxController {
   Stream<QuerySnapshot<Map<String, dynamic>>> streamChats(String chat_id) {
     CollectionReference chats = firestore.collection("chats");
     var chat;
-    // try {
     chat = chats
         .doc(chat_id)
         .collection("chat")
-        .orderBy("time", descending: true)
+        .orderBy("time", descending: false)
         .limit(100) //100개 채팅 제한
         .snapshots();
-    // print(chat);
-    // } catch (e) {
-    //   chat = null;
-    // }
     return chat;
   }
 
@@ -46,9 +41,6 @@ class ChatController extends GetxController {
         .collection('chats')
         .where('connections', isEqualTo: email)
         .get();
-    mychat.docs.forEach((data) {
-      print(data.id);
-    });
   }
 
   Future streamLastChats(String email) async {
@@ -70,7 +62,6 @@ class ChatController extends GetxController {
           .orderBy("time", descending: true)
           .limit(1)
           .get();
-
       var msgTime = lastChat.docs[0]
           .data()["time"]
           .toString()
@@ -95,19 +86,18 @@ class ChatController extends GetxController {
       } else {
         time = lastChat.docs[0].data()["time"].toString().substring(0, 10);
       }
-
       chatLastList.add({
         "friendEmail": user[0].email,
         "friendName": user[0].name,
         "friendPhotoUrl": user[0].photoUrl,
         "msg": lastChat.docs[0].data()["msg"],
-        "time": time,
+        "time": time.toString(),
         "datetime": DateTime.parse(lastChat.docs[0].data()["time"]),
         "chat_id": lastChat.docs[0].id,
         "un_read": updateStatusChat.docs.length
       });
     }));
-    print(chatLastList);
+
     chatLastList.sort((a, b) {
       print(a["datetime"].difference(b["datetime"]).inSeconds);
       return b["datetime"].difference(a["datetime"]).inSeconds;
@@ -118,11 +108,10 @@ class ChatController extends GetxController {
 
   //채팅 create
   createChat(String email, Map<String, dynamic> argument, String chat) async {
-    print(argument);
     if (chat != "") {
       CollectionReference chats = firestore.collection("chats");
       CollectionReference users = firestore.collection("users");
-      DateTime date = await (DateTime.now().toUtc().add(Duration(hours: 9)));
+      DateTime date = (DateTime.now().toUtc().add(const Duration(hours: 9)));
 
       await chats.doc(argument["chat_id"]).collection("chat").add({
         "sender": email,
