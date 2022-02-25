@@ -121,9 +121,7 @@ class ChatController extends GetxController {
         "isRead": false,
         "groupTime":
             DateFormat('yy년 MM월 dd일').format(DateTime.parse(date.toString())),
-        // "groupTime": DateFormat.yMMMMd('en_US').format(DateTime.parse(date)),
       });
-
       // clear
       chatC.clear();
       //마지막 채팅시간 업데이트(나)
