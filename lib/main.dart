@@ -3,6 +3,7 @@ import 'package:chatting_app/app/utils/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -28,6 +29,13 @@ class MyApp extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           return Obx(
             () => GetMaterialApp(
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales: [
+                const Locale('ko', 'KR'),
+              ],
               debugShowCheckedModeBanner: false,
               title: "chatApp",
               theme: ThemeData(

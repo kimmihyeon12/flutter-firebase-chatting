@@ -5,7 +5,7 @@ import 'package:chatting_app/app/views/pages/nav/my_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-List<Widget> navPages = [HomePage(), ChatPage(), MyPage()];
+List<Widget> navPages = [HomePage(), ChatPage(), Calender()];
 
 class NavPage extends StatelessWidget {
   @override

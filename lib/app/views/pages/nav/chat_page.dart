@@ -96,7 +96,7 @@ class ChatPage extends GetView<ChatController> {
                                                               top: Get.height *
                                                                   0.002)),
                                                       fontS(
-                                                          "${snapshot.data[index]["msg"]}",
+                                                          "${snapshot.data[index]["msg"] ?? "사진"}",
                                                           color: 0xff707070),
                                                     ],
                                                   ),
@@ -115,7 +115,8 @@ class ChatPage extends GetView<ChatController> {
                                               Padding(
                                                   padding: EdgeInsets.only(
                                                       top: Get.height * 0.002)),
-                                              snapshot.data[index]["un_read"] ==
+                                              snapshot.data[index]
+                                                          ["read_index"] ==
                                                       0
                                                   ? Text(" ")
                                                   : Container(
@@ -127,7 +128,7 @@ class ChatPage extends GetView<ChatController> {
                                                                   bottom: 3,
                                                                   top: 1),
                                                           child: fontSM(
-                                                              "${snapshot.data[index]["un_read"]}",
+                                                              "${snapshot.data[index]["read_index"]}",
                                                               color:
                                                                   0xffffffff)),
                                                       decoration: BoxDecoration(

@@ -141,42 +141,69 @@ class HomePage extends StatelessWidget {
                                 padding:
                                     EdgeInsets.only(top: Get.height * 0.01),
                                 child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.toNamed(Routes.PRORILEDETAIL,
-                                            arguments: {
-                                              "user": authC
-                                                  .user.value.followUser?[index]
-                                            });
-                                      },
-                                      child: profileImage(Get.width * 0.12,
-                                          image:
-                                              "${authC.user.value.followUser?[index].photoUrl ?? "https://w.namu.la/s/c4b8eb1c9ea25c0e252b81e3aab503097fdd7a7ae00acdba6f86da4e46ad5e3629335e1022104c01db12954074159679a427e9d4f2e0519db064e4203dec3dc04fdbf124789ea8400b3e6793f77a221e"}"),
-                                    ),
-                                    Padding(
-                                        padding: EdgeInsets.only(
-                                            left: Get.width * 0.03)),
-                                    InkWell(
-                                      onTap: () {
-                                        authC.createFirebaseChatRoom(
-                                            authC.user.value.followUser?[index]
-                                                .email,
-                                            authC.user.value.followUser?[index]
-                                                .name);
-                                      },
-                                      child: Container(
-                                        height: Get.height * 0.05,
-                                        width: Get.width * 0.7,
-                                        child: Center(
-                                          child: Row(
-                                            children: [
-                                              fontS(
-                                                  "${authC.user.value.followUser?[index].name}",
-                                                  color: 0xff707070),
-                                            ],
+                                    Row(
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Get.toNamed(Routes.PRORILEDETAIL,
+                                                arguments: {
+                                                  "user": authC.user.value
+                                                      .followUser?[index]
+                                                });
+                                          },
+                                          child: profileImage(Get.width * 0.12,
+                                              image:
+                                                  "${authC.user.value.followUser?[index].photoUrl ?? "https://w.namu.la/s/c4b8eb1c9ea25c0e252b81e3aab503097fdd7a7ae00acdba6f86da4e46ad5e3629335e1022104c01db12954074159679a427e9d4f2e0519db064e4203dec3dc04fdbf124789ea8400b3e6793f77a221e"}"),
+                                        ),
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                left: Get.width * 0.03)),
+                                        InkWell(
+                                          onTap: () {
+                                            authC.createFirebaseChatRoom(
+                                                authC.user.value
+                                                    .followUser?[index].email,
+                                                authC.user.value
+                                                    .followUser?[index].name);
+                                          },
+                                          child: Container(
+                                            height: Get.height * 0.05,
+                                            width: Get.width * 0.5,
+                                            child: Center(
+                                              child: Row(
+                                                children: [
+                                                  fontS(
+                                                      "${authC.user.value.followUser?[index].name}",
+                                                      color: 0xff707070),
+                                                ],
+                                              ),
+                                            ),
                                           ),
                                         ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          right: Get.width * 0.02),
+                                      child: Container(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 10,
+                                              right: 10,
+                                              bottom: 5,
+                                              top: 2),
+                                          child:
+                                              fontS("gggg", color: 0xffffffff),
+                                        ),
+                                        constraints: BoxConstraints(
+                                            maxWidth: Get.width * 0.6),
+                                        decoration: BoxDecoration(
+                                            color: Color(0xffc7c7c7),
+                                            borderRadius:
+                                                BorderRadius.circular(30)),
                                       ),
                                     ),
                                   ],

@@ -7,6 +7,7 @@ class ChatMessage extends StatelessWidget {
   const ChatMessage({
     Key? key,
     required this.isSender,
+    required this.img,
     required this.msg,
     required this.time,
   }) : super(key: key);
@@ -14,9 +15,10 @@ class ChatMessage extends StatelessWidget {
   final bool isSender;
   final String msg;
   final String time;
-
+  final String img;
   @override
   Widget build(BuildContext context) {
+    print(img);
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 5,
@@ -28,7 +30,12 @@ class ChatMessage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           isSender
-              ? fontSM(DateFormat('HH:mm').format(DateTime.parse(time)))
+              ? Row(
+                  children: [
+                    //     fontSM("읽음"),
+                    fontSM(DateFormat('HH:mm').format(DateTime.parse(time))),
+                  ],
+                )
               : Container(),
           Padding(padding: EdgeInsets.only(right: isSender ? 5 : 0)),
           Container(
@@ -48,11 +55,22 @@ class ChatMessage extends StatelessWidget {
                     ),
             ),
             padding: EdgeInsets.only(top: 8, bottom: 9, left: 10, right: 10),
-            child: fontS("$msg", fonts: "NeoM"),
+            child: img != "null"
+                ? Image.network(
+                    img,
+                    width: Get.width * 0.4,
+                  )
+                : fontS("$msg", fonts: "NeoM"),
           ),
           Padding(padding: EdgeInsets.only(right: !isSender ? 5 : 0)),
           !isSender
-              ? fontSM(DateFormat('HH:mm').format(DateTime.parse(time)))
+              ? Row(
+                  children: [
+                    fontSM(DateFormat('HH:mm').format(DateTime.parse(time))),
+                    Padding(padding: EdgeInsets.only(right: 2)),
+                    //     fontSM("읽음"),
+                  ],
+                )
               : Container(),
           SizedBox(height: 5),
         ],

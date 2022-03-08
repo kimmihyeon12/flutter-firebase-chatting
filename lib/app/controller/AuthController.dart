@@ -59,14 +59,16 @@ class AuthController extends GetxController {
         "email": currentUser!.user.email,
         "photoUrl": currentUser!.user.photoURL ?? "noimage",
         "status": "",
-        "creationTime": date,
-        "lastSignInTime": date,
+        "creationTime": date.toString(),
+        "lastSignInTime": date.toString(),
         "updatedTime": DateTime.now().toIso8601String(),
       });
     }
     //이메일 storage에 존재하면 (로그인후 로그아웃한 경우)
     else {
-      await users.doc(currentUser!.user.email).update({"lastSignInTime": date});
+      await users
+          .doc(currentUser!.user.email)
+          .update({"lastSignInTime": date.toString()});
     }
     // user 정보 얻어오기
     await getUser(users, currentUser!.user.email);
@@ -214,6 +216,7 @@ class AuthController extends GetxController {
         "connection": friendEmail,
         "lastTime": date,
         "create_status": false,
+        "read_index": 0
       });
 
       Get.toNamed(
@@ -230,28 +233,17 @@ class AuthController extends GetxController {
       await getListChat();
       var _chatid;
       checkConnection.docs.forEach((e) => {_chatid = e.id});
-      final updateStatusChat = await chats
-          .doc(_chatid)
-          .collection("chat")
-          .where("isRead", isEqualTo: false)
-          .where("recipient", isEqualTo: user.value.email)
-          .get();
+      var chatList = await chats.doc(_chatid).get();
+      var chatMap = chatList.data() as Map;
 
-      updateStatusChat.docs.forEach((element) async {
-        await chats
-            .doc(_chatid)
-            .collection("chat")
-            .doc(element.id)
-            .update({"isRead": true});
-      });
       await users
           .doc(user.value.email)
           .collection("chats")
           .doc(_chatid)
           .update({
-        "lastTime": date.toString(),
-        "create_status": true,
+        "read_index": chatMap['chat'].length,
       });
+
       Get.toNamed(
         Routes.CHATROOM,
         arguments: {
@@ -261,6 +253,13 @@ class AuthController extends GetxController {
         },
       );
     }
+  }
+
+  profileStatusUpdate(text) async {
+    await firestore
+        .collection("users")
+        .doc(user.value.email)
+        .update({"status": text});
   }
 
   profileImageUpdate(option, background) async {
