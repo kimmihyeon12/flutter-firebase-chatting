@@ -1,6 +1,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:chatting_app/app/controller/AuthController.dart';
 import 'package:chatting_app/app/controller/CalenderController.dart';
+import 'package:chatting_app/app/views/widgets/calenderCreateModal.dart';
 import 'package:chatting_app/app/views/widgets/font.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,160 +31,7 @@ class Calender extends GetView<CalenderController> {
       () => Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // Add your onPressed code here!
-            Get.dialog(
-              AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
-                content: Container(
-                  height: Get.height * 0.365,
-                  child: Column(
-                    children: [
-                      Center(
-                          child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          fontS('일정 작성하기 ', fonts: "NeoB"),
-                          Image.asset("assets/smail.png")
-                        ],
-                      )),
-                      Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                      Container(
-                        height: Get.height * 0.05,
-                        child: TextFormField(
-                          controller: controller.title,
-                          decoration: new InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(12.0),
-                              borderSide: BorderSide(
-                                color: const Color(0xffD5D5D5),
-                              ),
-                            ),
-                            hintText: "제목",
-                            contentPadding: EdgeInsets.all(10.0),
-                            fillColor: Colors.white,
-                            border: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(12.0),
-                              borderSide: new BorderSide(),
-                            ),
-                            //fillColor: Colors.green
-                          ),
-                          validator: (val) {},
-                          style: TextStyle(
-                            fontFamily: "NeoL",
-                            fontSize: 15,
-                            color: Color(0xff707070),
-                          ),
-                        ),
-                      ),
-                      Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                      Container(
-                        child: TextFormField(
-                          cursorColor: Colors.black12,
-                          controller: controller.content,
-                          decoration: new InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(12.0),
-                              borderSide: BorderSide(
-                                color: const Color(0xffD5D5D5),
-                              ),
-                            ),
-                            contentPadding: EdgeInsets.all(10.0),
-                            hintText: "내용",
-                            fillColor: Colors.white,
-                            border: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(12.0),
-                              borderSide: new BorderSide(),
-                            ),
-                            //fillColor: Colors.green
-                          ),
-                          validator: (val) {},
-                          maxLines: 6,
-                          style: TextStyle(
-                            fontFamily: "NeoL",
-                            fontSize: 15,
-                            color: Color(0xff707070),
-                          ),
-                        ),
-                      ),
-                      Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                      InkWell(
-                        onTap: () {
-                          DatePicker.showDateTimePicker(
-                            context,
-                            locale: LocaleType.ko,
-                            showTitleActions: true,
-                            minTime: DateTime(2018, 3, 5),
-                            maxTime: DateTime(2026, 6, 7),
-                            onConfirm: (date) {
-                              controller.setTime(date);
-                            },
-                            currentTime: controller.time.value,
-                          );
-                        },
-                        child: Obx(
-                          () => Container(
-                            child: Padding(
-                              padding: EdgeInsets.only(right: Get.width * 0.02),
-                              child: Container(
-                                  width: Get.width,
-                                  child: Center(
-                                    child: Column(
-                                      children: [
-                                        fontS(
-                                            controller.time.value
-                                                .toString()
-                                                .substring(0, 10),
-                                            color: 0xffffffff,
-                                            fonts: "NeoB"),
-                                        fontS(
-                                            controller.time.value
-                                                .toString()
-                                                .substring(11, 16),
-                                            color: 0xffffffff,
-                                            fonts: "NeoB"),
-                                      ],
-                                    ),
-                                  )),
-                            ),
-                            height: 44,
-                            decoration: BoxDecoration(
-                              color: Color(0xffFFC1C1),
-                              border: Border.all(
-                                color: Color(0xffffffff),
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Padding(padding: EdgeInsets.only(top: Get.height * 0.01)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // InkWell(
-                          //   child: fontS("취소", fonts: "NeoB"),
-                          //   onTap: () {
-                          //     Get.back();
-                          //   },
-                          // ),
-                          Padding(padding: EdgeInsets.only(right: 5)),
-                          InkWell(
-                            child: fontS("확인", fonts: "NeoB"),
-                            onTap: () {
-                              if (!controller.loading.value)
-                                controller.createCalendar();
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
+            CalenderCreateModal(context);
           },
           backgroundColor: Color(0xffFF728E),
           child: Icon(
@@ -324,10 +172,6 @@ class Calender extends GetView<CalenderController> {
                                   controller.selectedDay.value, day);
                             },
                             onDaySelected: (selectedDay, focusedDay) {
-                              print(selectedDay
-                                  .toString()
-                                  .split(" ")[0]
-                                  .split("-")[2]);
                               Get.bottomSheet(
                                 Container(
                                   height: 250,
@@ -355,13 +199,46 @@ class Calender extends GetView<CalenderController> {
                                                             CrossAxisAlignment
                                                                 .start,
                                                         children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              fontS(
+                                                                  event["data"][
+                                                                          "title"]
+                                                                      .toString(),
+                                                                  color:
+                                                                      0xff0A0A0A,
+                                                                  fonts:
+                                                                      "NeoB"),
+                                                              Row(
+                                                                children: [
+                                                                  InkWell(
+                                                                    onTap: () {
+                                                                      //controller.deleteCalender();
+                                                                    },
+                                                                    child: fontSM(
+                                                                        " 수정",
+                                                                        color:
+                                                                            0xff707070),
+                                                                  ),
+                                                                  InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        //controller.deleteCalender();
+                                                                      },
+                                                                      child: fontSM(
+                                                                          " 삭제",
+                                                                          color:
+                                                                              0xff707070))
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
                                                           fontS(
-                                                              event["title"]
-                                                                  .toString(),
-                                                              color: 0xff0A0A0A,
-                                                              fonts: "NeoB"),
-                                                          fontS(
-                                                              event["content"],
+                                                              event["data"]
+                                                                  ["content"],
                                                               color: 0xff707070)
                                                         ],
                                                       ),
@@ -406,6 +283,7 @@ class Calender extends GetView<CalenderController> {
                             {
                               for (var value in values)
                                 {
+                                  print(value["data"]),
                                   todayWidget.add(
                                     Padding(
                                       padding: EdgeInsets.only(top: 15),
@@ -422,16 +300,123 @@ class Calender extends GetView<CalenderController> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  fontS(value["title"],
-                                                      fonts: "NeoB"),
-                                                  fontS(value["content"],
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    right: 5),
+                                                            child: InkWell(
+                                                              onTap: () {
+                                                                controller.updateComplete(
+                                                                    value["id"],
+                                                                    value["data"]
+                                                                        [
+                                                                        "time"],
+                                                                    value["data"]
+                                                                        [
+                                                                        "complete"]);
+                                                              },
+                                                              child: value[
+                                                                          "data"]
+                                                                      [
+                                                                      "complete"]
+                                                                  ? Image.asset(
+                                                                      "assets/check-w.png")
+                                                                  : Image.asset(
+                                                                      "assets/check.png"),
+                                                            ),
+                                                          ),
+                                                          value["data"]
+                                                                  ["complete"]
+                                                              ? fontS(
+                                                                  value["data"]
+                                                                      ["title"],
+                                                                  fonts: "NeoB",
+                                                                  color:
+                                                                      0xffffffff)
+                                                              : fontS(
+                                                                  value["data"]
+                                                                      ["title"],
+                                                                  fonts:
+                                                                      "NeoB"),
+                                                        ],
+                                                      ),
+                                                      Row(
+                                                        children: [
+                                                          InkWell(
+                                                            onTap: () {
+                                                              CalenderCreateModal(
+                                                                  context,
+                                                                  id: value[
+                                                                      "id"],
+                                                                  time: value[
+                                                                          "data"]
+                                                                      ["time"]);
+                                                            },
+                                                            child: fontSM(" 수정",
+                                                                color:
+                                                                    0xff707070),
+                                                          ),
+                                                          InkWell(
+                                                              onTap: () async {
+                                                                var result =
+                                                                    await Get
+                                                                        .dialog(
+                                                                  AlertDialog(
+                                                                    content:
+                                                                        const Text(
+                                                                            '정말 삭제하시겠습니까?'),
+                                                                    actions: [
+                                                                      TextButton(
+                                                                        child: const Text(
+                                                                            "확인"),
+                                                                        onPressed:
+                                                                            () =>
+                                                                                Get.back(result: true),
+                                                                      ),
+                                                                      TextButton(
+                                                                        child: const Text(
+                                                                            "취소"),
+                                                                        onPressed:
+                                                                            () =>
+                                                                                Get.back(result: false),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                );
+                                                                if (result)
+                                                                  controller.deleteCalender(
+                                                                      value[
+                                                                          "id"],
+                                                                      value["data"]
+                                                                          [
+                                                                          "time"]);
+                                                              },
+                                                              child: fontSM(
+                                                                  " 삭제",
+                                                                  color:
+                                                                      0xff707070)),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                  fontS(
+                                                      value["data"]["content"],
                                                       fonts: "NeoL",
                                                       color: 0xff707070),
                                                 ],
                                               ),
                                             ),
                                             decoration: BoxDecoration(
-                                              color: Colors.white,
+                                              color: value["data"]["complete"]
+                                                  ? Color(0xffFFC1C1)
+                                                  : Colors.white,
                                               borderRadius: BorderRadius.all(
                                                 Radius.circular(10),
                                               ),
