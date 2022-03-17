@@ -74,15 +74,8 @@ class AddUserPage extends GetView<SearchController> {
                         child: Column(
                       children: [
                         Padding(
-                            padding: EdgeInsets.only(top: Get.height * 0.2)),
-                        Image.asset(
-                          "assets/sheep.png",
-                          width: Get.width * 0.4,
-                        ),
-                        Padding(
                             padding: EdgeInsets.only(top: Get.height * 0.02)),
-                        fontM("아직 등록된 친구가 없습니다",
-                            color: 0XFFFF728D, fonts: "NotoB")
+                        fontM("등록된 친구가 없습니다", color: 0XFFFF728D, fonts: "NotoB")
                       ],
                     )),
                   )

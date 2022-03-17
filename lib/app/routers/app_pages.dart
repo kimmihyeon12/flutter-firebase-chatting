@@ -4,13 +4,12 @@ import 'package:chatting_app/app/binding/NavBinding.dart';
 import 'package:chatting_app/app/binding/SearchBinding.dart';
 import 'package:chatting_app/app/views/pages/nav/add_user_page.dart';
 import 'package:chatting_app/app/views/pages/nav/chat_room_page.dart';
-import 'package:chatting_app/app/views/pages/nav/home_page.dart';
 import 'package:chatting_app/app/views/pages/introduction_page.dart';
 import 'package:chatting_app/app/views/pages/login_page.dart';
 import 'package:chatting_app/app/views/pages/nav/imgPreview.dart';
+import 'package:chatting_app/app/views/pages/nav/my_page.dart';
 import 'package:chatting_app/app/views/pages/nav/nav_page.dart';
 import 'package:chatting_app/app/views/pages/nav/profileDetail.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'app_routes.dart';
 
@@ -47,6 +46,10 @@ class AppPages {
     GetPage(
       name: Routes.IMGPREVIEW,
       page: () => ImagePreview(),
+    ),
+    GetPage(
+      name: Routes.MYPAGE,
+      page: () => Mypage(),
     ),
   ];
 }

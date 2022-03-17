@@ -1,7 +1,7 @@
 import 'package:chatting_app/app/controller/NavController.dart';
 import 'package:chatting_app/app/views/pages/nav/chat_page.dart';
 import 'package:chatting_app/app/views/pages/nav/home_page.dart';
-import 'package:chatting_app/app/views/pages/nav/my_page.dart';
+import 'package:chatting_app/app/views/pages/nav/calender.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

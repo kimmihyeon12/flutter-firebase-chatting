@@ -18,6 +18,9 @@ class HomePage extends StatelessWidget {
             title: font2XL("친구", fonts: "NotoB"),
             actions: [
               InkWell(
+                onTap: () {
+                  Get.toNamed(Routes.MYPAGE);
+                },
                 child: Image.asset("assets/add-btn.png"),
               )
             ],
@@ -100,17 +103,41 @@ class HomePage extends StatelessWidget {
                       top: Get.height * 0.01,
                       bottom: Get.height * 0.01),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed(Routes.PRORILEDETAIL,
-                              arguments: {"user": authC.user.value});
-                        },
-                        child: profileImage(Get.width * 0.15,
-                            image: authC.user.value.photoUrl!),
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(Routes.PRORILEDETAIL,
+                                  arguments: {"user": authC.user.value});
+                            },
+                            child: profileImage(Get.width * 0.15,
+                                image: authC.user.value.photoUrl!),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(left: Get.width * 0.03)),
+                          fontS(authC.user.value.name!, color: 0xff707070),
+                        ],
                       ),
-                      Padding(padding: EdgeInsets.only(left: Get.width * 0.03)),
-                      fontS(authC.user.value.name!, color: 0xff707070),
+                      authC.user.value.status == ""
+                          ? Container()
+                          : Padding(
+                              padding: EdgeInsets.only(right: Get.width * 0.02),
+                              child: Container(
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      left: 10, right: 10, bottom: 5, top: 2),
+                                  child: fontS(authC.user.value.status!,
+                                      color: 0xffffffff),
+                                ),
+                                constraints:
+                                    BoxConstraints(maxWidth: Get.width * 0.6),
+                                decoration: BoxDecoration(
+                                    color: Color(0xffc7c7c7),
+                                    borderRadius: BorderRadius.circular(30)),
+                              ),
+                            ),
                     ],
                   ),
                 ),
@@ -185,27 +212,37 @@ class HomePage extends StatelessWidget {
                                         ),
                                       ],
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          right: Get.width * 0.02),
-                                      child: Container(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 10,
-                                              right: 10,
-                                              bottom: 5,
-                                              top: 2),
-                                          child:
-                                              fontS("gggg", color: 0xffffffff),
-                                        ),
-                                        constraints: BoxConstraints(
-                                            maxWidth: Get.width * 0.6),
-                                        decoration: BoxDecoration(
-                                            color: Color(0xffc7c7c7),
-                                            borderRadius:
-                                                BorderRadius.circular(30)),
-                                      ),
-                                    ),
+                                    authC.user.value.followUser?[index]
+                                                .status! ==
+                                            ""
+                                        ? Container()
+                                        : Padding(
+                                            padding: EdgeInsets.only(
+                                                right: Get.width * 0.02),
+                                            child: Container(
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 10,
+                                                    right: 10,
+                                                    bottom: 5,
+                                                    top: 2),
+                                                child: fontS(
+                                                    authC
+                                                        .user
+                                                        .value
+                                                        .followUser?[index]
+                                                        .status!,
+                                                    color: 0xffffffff),
+                                              ),
+                                              constraints: BoxConstraints(
+                                                  maxWidth: Get.width * 0.6),
+                                              decoration: BoxDecoration(
+                                                  color: Color(0xffc7c7c7),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30)),
+                                            ),
+                                          ),
                                   ],
                                 ),
                               );

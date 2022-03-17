@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,6 +14,7 @@ class AuthController extends GetxController {
   static AuthController get to => Get.find();
   var isSkipIntro = true.obs; // intro 보여줄시 false
   var isAutoLogin = false.obs;
+  late TextEditingController textC = TextEditingController();
   // ignore: prefer_final_fields, unused_field
   GoogleSignIn _googleSignIn = GoogleSignIn();
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -256,10 +258,16 @@ class AuthController extends GetxController {
   }
 
   profileStatusUpdate(text) async {
+    print(text);
     await firestore
         .collection("users")
         .doc(user.value.email)
         .update({"status": text});
+    user.update((user) {
+      user!.status = text;
+    });
+    user.refresh();
+    Get.back();
   }
 
   profileImageUpdate(option, background) async {
@@ -331,5 +339,17 @@ class AuthController extends GetxController {
     });
     recommendUserList.refresh();
     print('recommendUserList.length ${recommendUserList.length}');
+  }
+
+  @override
+  void onInit() {
+    textC = TextEditingController();
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    textC.dispose();
+    super.onClose();
   }
 }
