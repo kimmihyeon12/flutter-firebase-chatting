@@ -9,6 +9,7 @@ import 'package:get_storage/get_storage.dart';
 
 import 'app/controller/AuthController.dart';
 import 'app/routers/app_routes.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

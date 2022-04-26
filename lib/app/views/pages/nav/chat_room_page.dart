@@ -8,6 +8,7 @@ import 'package:chatting_app/app/views/widgets/font.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class ChatRoomPage extends GetView<ChatController> {
   final authC = AuthController.to;

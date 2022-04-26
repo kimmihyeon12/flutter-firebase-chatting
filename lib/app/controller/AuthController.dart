@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:chatting_app/app/views/widgets/size.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -342,8 +344,14 @@ class AuthController extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     textC = TextEditingController();
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    print('Running on ${androidInfo}');
+    if (androidInfo == "AndroidDeviceInfo") {
+      Size().setHeight(Get.height);
+    }
     super.onInit();
   }
 
