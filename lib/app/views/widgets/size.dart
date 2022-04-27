@@ -8,7 +8,7 @@ class Size {
   void init(context){
     print("init");
     height = height - MediaQuery.of(context).padding.top;
-    print(height);
+
   }
   void setWidth(double width) {
     width = width;
