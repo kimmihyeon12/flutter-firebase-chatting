@@ -14,6 +14,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size =  Size()..init(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -24,20 +26,20 @@ class LoginPage extends StatelessWidget {
               Container(
                 child: Image.asset(
                   "assets/cat.gif",
-                  width: Size().width * 0.8,
+                  width: size.width * 0.8,
                   fit: BoxFit.cover,
                 ),
               ),
-              Padding(padding: EdgeInsets.only(top: Size().height * 0.05)),
+              Padding(padding: EdgeInsets.only(top: size.height * 0.05)),
               fontM("SNS 로그인", fonts: "NotoB"),
-              Padding(padding: EdgeInsets.only(top: Size().height * 0.03)),
+              Padding(padding: EdgeInsets.only(top: size.height * 0.03)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
                     child: Image.asset(
                       "assets/kakao-btn.png",
-                      width: Size().width * 0.18,
+                      width: size.width * 0.18,
                       fit: BoxFit.cover,
                     ),
                     onTap: () {
@@ -46,11 +48,11 @@ class LoginPage extends StatelessWidget {
                     },
                   ),
                   Padding(
-                      padding: EdgeInsets.only(right: Size().height * 0.03)),
+                      padding: EdgeInsets.only(right: size.height * 0.03)),
                   InkWell(
                     child: Image.asset(
                       "assets/google-btn.png",
-                      width: Size().width * 0.18,
+                      width: size.width * 0.18,
                       fit: BoxFit.cover,
                     ),
                     onTap: () {
@@ -59,7 +61,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ],
               ),
-              Padding(padding: EdgeInsets.only(top: Size().height * 0.12)),
+              Padding(padding: EdgeInsets.only(top: size.height * 0.12)),
               fontM("ⓒ Hoho Crop.", color: 0xff707070),
             ],
           ),

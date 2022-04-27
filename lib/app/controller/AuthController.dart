@@ -346,12 +346,6 @@ class AuthController extends GetxController {
   @override
   void onInit() async {
     textC = TextEditingController();
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    print('Running on ${androidInfo}');
-    if (androidInfo == "AndroidDeviceInfo") {
-      Size().setHeight(Get.height);
-    }
     super.onInit();
   }
 
