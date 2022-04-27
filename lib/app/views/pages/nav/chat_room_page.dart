@@ -52,7 +52,7 @@ class ChatRoomPage extends GetView<ChatController> {
               children: [
                 Image.asset("assets/chat-bg.png",
                     width: authC.width.value,
-                    height: authC.height * 0.86,
+                    height: authC.height * 0.812,
                     fit: BoxFit.fill),
                 Container(
                   height: authC.height * 0.81,

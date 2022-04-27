@@ -25,7 +25,7 @@ class LoginPage extends StatelessWidget {
               Container(
                 child: Image.asset(
                   "assets/cat.gif",
-                  height: authC.height * 0.38,
+                  height: authC.height * 0.34,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -38,7 +38,7 @@ class LoginPage extends StatelessWidget {
                   InkWell(
                     child: Image.asset(
                       "assets/kakao-btn.png",
-                      height: authC.height * 0.11,
+                      height: authC.height * 0.09,
                       fit: BoxFit.cover,
                     ),
                     onTap: () {
@@ -50,7 +50,7 @@ class LoginPage extends StatelessWidget {
                   InkWell(
                     child: Image.asset(
                       "assets/google-btn.png",
-                      height: authC.height * 0.11,
+                      height: authC.height * 0.09,
                       fit: BoxFit.cover,
                     ),
                     onTap: () {

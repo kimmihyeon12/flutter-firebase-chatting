@@ -16,7 +16,9 @@ class AuthController extends GetxController {
   var height = Get.height.obs;
   var width = Get.width.obs;
   void init(context) {
-    height(height.value - MediaQuery.of(context).padding.top);
+    height(height.value -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom);
   }
 
   static AuthController get to => Get.find();
@@ -251,7 +253,7 @@ class AuthController extends GetxController {
           .collection("chats")
           .doc(_chatid)
           .update({
-        "read_index": chatMap['chat'].length,
+        "read_index": chatMap['chat']?.length,
       });
 
       Get.toNamed(
