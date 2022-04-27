@@ -50,11 +50,10 @@ class ChatRoomPage extends GetView<ChatController> {
           children: [
             Stack(
               children: [
-                Image.asset(
-                  "assets/chat-bg.png",
-                  width: authC.width.value + 20,
-                  height: authC.height * 0.81,
-                ),
+                Image.asset("assets/chat-bg.png",
+                    width: authC.width.value,
+                    height: authC.height * 0.86,
+                    fit: BoxFit.fill),
                 Container(
                   height: authC.height * 0.81,
                   width: Get.width,
@@ -195,7 +194,6 @@ class ChatRoomPage extends GetView<ChatController> {
                   Padding(padding: EdgeInsets.only(right: authC.width * 0.02)),
                   Container(
                     width: authC.width * 0.85,
-                    //height: authC.height* 0.08,
                     child: TextField(
                       //포커스 주기!
                       autocorrect: false,
