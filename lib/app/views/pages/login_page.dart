@@ -14,6 +14,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(MediaQuery.of(context).size);
+    print(MediaQuery.of(context).padding.top);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
