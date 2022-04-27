@@ -13,6 +13,12 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthController extends GetxController {
+  double height = Get.height;
+  double width = Get.width;
+  init(context) {
+    height - MediaQuery.of(context).padding.top;
+  }
+
   static AuthController get to => Get.find();
   var isSkipIntro = true.obs; // intro 보여줄시 false
   var isAutoLogin = false.obs;
@@ -346,12 +352,6 @@ class AuthController extends GetxController {
   @override
   void onInit() async {
     textC = TextEditingController();
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    print('Running on ${androidInfo}');
-    if (androidInfo == "AndroidDeviceInfo") {
-      Size().setHeight(Get.height);
-    }
     super.onInit();
   }
 

@@ -1,3 +1,4 @@
+import 'package:chatting_app/app/controller/AuthController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';

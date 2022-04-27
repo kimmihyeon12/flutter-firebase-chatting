@@ -11,35 +11,33 @@ import 'package:device_info_plus/device_info_plus.dart';
 
 class LoginPage extends StatelessWidget {
   final authC = AuthController.to;
-
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size);
-    print(MediaQuery.of(context).padding.top);
+    authC.init(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Column(
             children: [
-              Padding(padding: EdgeInsets.only(top: Size().height * 0.25)),
+              Padding(padding: EdgeInsets.only(top: authC.height * 0.25)),
               Container(
                 child: Image.asset(
                   "assets/cat.gif",
-                  width: Size().width * 0.8,
+                  width: authC.width * 0.8,
                   fit: BoxFit.cover,
                 ),
               ),
-              Padding(padding: EdgeInsets.only(top: Size().height * 0.05)),
+              Padding(padding: EdgeInsets.only(top: authC.height * 0.05)),
               fontM("SNS 로그인", fonts: "NotoB"),
-              Padding(padding: EdgeInsets.only(top: Size().height * 0.03)),
+              Padding(padding: EdgeInsets.only(top: authC.height * 0.03)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   InkWell(
                     child: Image.asset(
                       "assets/kakao-btn.png",
-                      width: Size().width * 0.18,
+                      width: authC.width * 0.18,
                       fit: BoxFit.cover,
                     ),
                     onTap: () {
@@ -47,12 +45,11 @@ class LoginPage extends StatelessWidget {
                       // Get.offAllNamed(Routes.Nav);
                     },
                   ),
-                  Padding(
-                      padding: EdgeInsets.only(right: Size().height * 0.03)),
+                  Padding(padding: EdgeInsets.only(right: authC.height * 0.03)),
                   InkWell(
                     child: Image.asset(
                       "assets/google-btn.png",
-                      width: Size().width * 0.18,
+                      width: authC.width * 0.18,
                       fit: BoxFit.cover,
                     ),
                     onTap: () {
@@ -61,7 +58,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ],
               ),
-              Padding(padding: EdgeInsets.only(top: Size().height * 0.12)),
+              Padding(padding: EdgeInsets.only(top: authC.height * 0.12)),
               fontM("ⓒ Hoho Crop.", color: 0xff707070),
             ],
           ),

@@ -22,7 +22,7 @@ final Map<DateTime, List> _holidays = {
 
 class Calender extends GetView<CalenderController> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
-
+  final authC = AuthController.to;
   @override
   Widget build(BuildContext context) {
     controller.setEvent();
@@ -56,10 +56,10 @@ class Calender extends GetView<CalenderController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: Get.height * 0.025),
+                        padding: EdgeInsets.only(top: authC.height * 0.025),
                         child: Container(
-                          width: Get.width * 0.88,
-                          height: Get.height * 0.36,
+                          width: authC.width * 0.88,
+                          height: authC.height * 0.36,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.all(
@@ -73,8 +73,8 @@ class Calender extends GetView<CalenderController> {
                                 weekendStyle: TextStyle(
                                     fontSize: 13, fontFamily: "NeoB")),
                             locale: 'ko-KR',
-                            daysOfWeekHeight: Get.height * 0.027,
-                            rowHeight: Get.height * 0.052,
+                            daysOfWeekHeight: authC.height * 0.027,
+                            rowHeight: authC.height * 0.052,
                             calendarBuilders: CalendarBuilders(
                                 markerBuilder: (context, date, events) {
                               return events.isNotEmpty
@@ -272,7 +272,7 @@ class Calender extends GetView<CalenderController> {
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                        left: Get.width * 0.06, top: Get.height * 0.02),
+                        left: authC.width * 0.06, top: authC.height * 0.02),
                     child: fontM("오늘의 할일", fonts: "NeoB"),
                   ),
                   (() {

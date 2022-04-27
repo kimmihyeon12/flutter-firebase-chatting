@@ -52,12 +52,12 @@ class ChatRoomPage extends GetView<ChatController> {
               children: [
                 Image.asset(
                   "assets/chat-bg.png",
-                  width: Get.width + 20,
-                  height: Get.height * 0.81,
+                  width: authC.width + 20,
+                  height: authC.height * 0.81,
                 ),
                 Container(
-                  height: Get.height * 0.81,
-                  width: Get.width,
+                  height: authC.height * 0.81,
+                  width: authC.width,
                   child: StreamBuilder<DocumentSnapshot>(
                     stream: controller.streamChats(argument["chat_id"]),
                     builder: (context, snapshot) {
@@ -107,7 +107,7 @@ class ChatRoomPage extends GetView<ChatController> {
                                                       padding:
                                                           EdgeInsets.symmetric(
                                                               vertical:
-                                                                  Get.height *
+                                                                  authC.height *
                                                                       0.01),
                                                       child: fontS(
                                                           "${alldata[index]["groupTime"]}"),
@@ -139,7 +139,7 @@ class ChatRoomPage extends GetView<ChatController> {
                 ),
               ],
             ),
-            Padding(padding: EdgeInsets.only(top: Get.height * 0.025)),
+            Padding(padding: EdgeInsets.only(top: authC.height * 0.025)),
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -192,10 +192,10 @@ class ChatRoomPage extends GetView<ChatController> {
                             });
                       },
                       child: Image.asset("assets/pickture-btn.png")),
-                  Padding(padding: EdgeInsets.only(right: Get.width * 0.02)),
+                  Padding(padding: EdgeInsets.only(right: authC.width * 0.02)),
                   Container(
-                    width: Get.width * 0.85,
-                    //height: Get.height * 0.08,
+                    width: authC.width * 0.85,
+                    //height: authC.height * 0.08,
                     child: TextField(
                       //포커스 주기!
                       autocorrect: false,

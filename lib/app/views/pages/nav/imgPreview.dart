@@ -23,7 +23,7 @@ class ImagePreview extends GetView<ChatController> {
             centerTitle: false,
             actions: [
               Padding(
-                padding: EdgeInsets.only(right: Get.width * 0.05),
+                padding: EdgeInsets.only(right: authC.width * 0.05),
                 child: Center(
                     child: InkWell(
                         onTap: () async {

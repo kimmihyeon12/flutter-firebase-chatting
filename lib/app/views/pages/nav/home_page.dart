@@ -34,44 +34,44 @@ class HomePage extends StatelessWidget {
               //header
               Padding(
                 padding: EdgeInsets.only(
-                    left: Get.width * 0.03,
-                    top: Get.height * 0.012,
-                    bottom: Get.height * 0.008),
+                    left: authC.width * 0.03,
+                    top: authC.height * 0.012,
+                    bottom: authC.height * 0.008),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: EdgeInsets.only(
-                        left: Get.width * 0.02,
-                        bottom: Get.height * 0.01,
+                        left: authC.width * 0.02,
+                        bottom: authC.height * 0.01,
                       ),
                       child: fontS("친구추가", color: 0xff707070),
                     ),
                     Row(
                       children: [
                         Container(
-                          width: Get.width * 0.13,
+                          width: authC.width * 0.13,
                           child: InkWell(
                             onTap: () {
                               Get.toNamed(Routes.ADDUSER);
                             },
                             child: Image.asset(
                               "assets/user-add.png",
-                              width: Get.width * 0.13,
+                              width: authC.width * 0.13,
                             ),
                           ),
                         ),
                         Obx(
                           () => Container(
-                            width: Get.width * 0.8,
-                            height: Get.width * 0.13,
+                            width: authC.width * 0.8,
+                            height: authC.width * 0.13,
                             child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: authC.recommendUserList.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return Padding(
-                                    padding:
-                                        EdgeInsets.only(left: Get.width * 0.01),
+                                    padding: EdgeInsets.only(
+                                        left: authC.width * 0.01),
                                     child: InkWell(
                                       onTap: () {
                                         Get.toNamed(Routes.PRORILEDETAIL,
@@ -81,7 +81,7 @@ class HomePage extends StatelessWidget {
                                               "friendRecommend": true
                                             });
                                       },
-                                      child: profileImage(Get.width * 0.13,
+                                      child: profileImage(authC.width * 0.13,
                                           image:
                                               "${authC.recommendUserList[index].photoUrl ?? "https://w.namu.la/s/c4b8eb1c9ea25c0e252b81e3aab503097fdd7a7ae00acdba6f86da4e46ad5e3629335e1022104c01db12954074159679a427e9d4f2e0519db064e4203dec3dc04fdbf124789ea8400b3e6793f77a221e"}"),
                                     ),
@@ -101,9 +101,9 @@ class HomePage extends StatelessWidget {
               Obx(
                 () => Padding(
                   padding: EdgeInsets.only(
-                      left: Get.width * 0.05,
-                      top: Get.height * 0.01,
-                      bottom: Get.height * 0.01),
+                      left: authC.width * 0.05,
+                      top: authC.height * 0.01,
+                      bottom: authC.height * 0.01),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -114,18 +114,20 @@ class HomePage extends StatelessWidget {
                               Get.toNamed(Routes.PRORILEDETAIL,
                                   arguments: {"user": authC.user.value});
                             },
-                            child: profileImage(Get.width * 0.15,
+                            child: profileImage(authC.width * 0.15,
                                 image: authC.user.value.photoUrl!),
                           ),
                           Padding(
-                              padding: EdgeInsets.only(left: Get.width * 0.03)),
+                              padding:
+                                  EdgeInsets.only(left: authC.width * 0.03)),
                           fontS(authC.user.value.name!, color: 0xff707070),
                         ],
                       ),
                       authC.user.value.status == ""
                           ? Container()
                           : Padding(
-                              padding: EdgeInsets.only(right: Get.width * 0.02),
+                              padding:
+                                  EdgeInsets.only(right: authC.width * 0.02),
                               child: Container(
                                 child: Padding(
                                   padding: EdgeInsets.only(
@@ -134,7 +136,7 @@ class HomePage extends StatelessWidget {
                                       color: 0xffffffff),
                                 ),
                                 constraints:
-                                    BoxConstraints(maxWidth: Get.width * 0.6),
+                                    BoxConstraints(maxWidth: authC.width * 0.6),
                                 decoration: BoxDecoration(
                                     color: Color(0xffc7c7c7),
                                     borderRadius: BorderRadius.circular(30)),
@@ -148,7 +150,7 @@ class HomePage extends StatelessWidget {
               Obx(
                 () => Padding(
                   padding: EdgeInsets.only(
-                    left: Get.width * 0.05,
+                    left: authC.width * 0.05,
                   ),
                   child: Column(
                     children: [
@@ -161,14 +163,14 @@ class HomePage extends StatelessWidget {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        height: Get.height,
+                        height: authC.height,
                         child: ListView.builder(
                             scrollDirection: Axis.vertical,
                             itemCount: authC.user.value.followUser?.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Padding(
                                 padding:
-                                    EdgeInsets.only(top: Get.height * 0.01),
+                                    EdgeInsets.only(top: authC.height * 0.01),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -183,13 +185,14 @@ class HomePage extends StatelessWidget {
                                                       .followUser?[index]
                                                 });
                                           },
-                                          child: profileImage(Get.width * 0.12,
+                                          child: profileImage(
+                                              authC.width * 0.12,
                                               image:
                                                   "${authC.user.value.followUser?[index].photoUrl ?? "https://w.namu.la/s/c4b8eb1c9ea25c0e252b81e3aab503097fdd7a7ae00acdba6f86da4e46ad5e3629335e1022104c01db12954074159679a427e9d4f2e0519db064e4203dec3dc04fdbf124789ea8400b3e6793f77a221e"}"),
                                         ),
                                         Padding(
                                             padding: EdgeInsets.only(
-                                                left: Get.width * 0.03)),
+                                                left: authC.width * 0.03)),
                                         InkWell(
                                           onTap: () {
                                             authC.createFirebaseChatRoom(
@@ -199,8 +202,8 @@ class HomePage extends StatelessWidget {
                                                     .followUser?[index].name);
                                           },
                                           child: Container(
-                                            height: Get.height * 0.05,
-                                            width: Get.width * 0.5,
+                                            height: authC.height * 0.05,
+                                            width: authC.width * 0.5,
                                             child: Center(
                                               child: Row(
                                                 children: [
@@ -220,7 +223,7 @@ class HomePage extends StatelessWidget {
                                         ? Container()
                                         : Padding(
                                             padding: EdgeInsets.only(
-                                                right: Get.width * 0.02),
+                                                right: authC.width * 0.02),
                                             child: Container(
                                               child: Padding(
                                                 padding: EdgeInsets.only(
@@ -237,7 +240,7 @@ class HomePage extends StatelessWidget {
                                                     color: 0xffffffff),
                                               ),
                                               constraints: BoxConstraints(
-                                                  maxWidth: Get.width * 0.6),
+                                                  maxWidth: authC.width * 0.6),
                                               decoration: BoxDecoration(
                                                   color: Color(0xffc7c7c7),
                                                   borderRadius:

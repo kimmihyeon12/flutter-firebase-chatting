@@ -35,9 +35,9 @@ class AddUserPage extends GetView<SearchController> {
         ),
         body: Column(
           children: [
-            Padding(padding: EdgeInsets.only(top: Get.height * 0.008)),
+            Padding(padding: EdgeInsets.only(top: authC.height * 0.008)),
             Container(
-              width: Get.width * 0.9,
+              width: authC.width * 0.9,
               child: TextField(
                 controller: controller.searchC,
                 decoration: InputDecoration(
@@ -74,7 +74,7 @@ class AddUserPage extends GetView<SearchController> {
                         child: Column(
                       children: [
                         Padding(
-                            padding: EdgeInsets.only(top: Get.height * 0.02)),
+                            padding: EdgeInsets.only(top: authC.height * 0.02)),
                         fontM("등록된 친구가 없습니다", color: 0XFFFF728D, fonts: "NotoB")
                       ],
                     )),
@@ -85,20 +85,20 @@ class AddUserPage extends GetView<SearchController> {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: EdgeInsets.only(
-                                top: Get.height * 0.01,
-                                left: Get.width * 0.055),
+                                top: authC.height * 0.01,
+                                left: authC.width * 0.055),
                             child: Container(
-                              width: Get.width * 0.85,
+                              width: authC.width * 0.85,
                               child: Row(
                                 children: [
-                                  profileImage(Get.width * 0.15,
+                                  profileImage(authC.width * 0.15,
                                       image:
                                           "${controller.searchUser[index]["photoUrl"]}"),
                                   Padding(
                                       padding: EdgeInsets.only(
-                                          left: Get.width * 0.03)),
+                                          left: authC.width * 0.03)),
                                   Container(
-                                    width: Get.width * 0.45,
+                                    width: authC.width * 0.45,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -109,7 +109,7 @@ class AddUserPage extends GetView<SearchController> {
                                             fonts: "NeoB"),
                                         Padding(
                                             padding: EdgeInsets.only(
-                                                top: Get.height * 0.002)),
+                                                top: authC.height * 0.002)),
                                         fontS(
                                             "${controller.searchUser[index]["email"]}",
                                             color: 0xff707070),
