@@ -52,12 +52,12 @@ class ChatRoomPage extends GetView<ChatController> {
               children: [
                 Image.asset(
                   "assets/chat-bg.png",
-                  width: authC.width + 20,
+                  width: authC.width.value + 20,
                   height: authC.height * 0.81,
                 ),
                 Container(
                   height: authC.height * 0.81,
-                  width: authC.width,
+                  width: Get.width,
                   child: StreamBuilder<DocumentSnapshot>(
                     stream: controller.streamChats(argument["chat_id"]),
                     builder: (context, snapshot) {
@@ -195,7 +195,7 @@ class ChatRoomPage extends GetView<ChatController> {
                   Padding(padding: EdgeInsets.only(right: authC.width * 0.02)),
                   Container(
                     width: authC.width * 0.85,
-                    //height: authC.height * 0.08,
+                    //height: authC.height* 0.08,
                     child: TextField(
                       //포커스 주기!
                       autocorrect: false,

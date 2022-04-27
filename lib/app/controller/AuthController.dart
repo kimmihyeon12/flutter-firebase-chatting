@@ -13,10 +13,10 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthController extends GetxController {
-  double height = Get.height;
-  double width = Get.width;
-  init(context) {
-    height - MediaQuery.of(context).padding.top;
+  var height = Get.height.obs;
+  var width = Get.width.obs;
+  void init(context) {
+    height(height.value - MediaQuery.of(context).padding.top);
   }
 
   static AuthController get to => Get.find();

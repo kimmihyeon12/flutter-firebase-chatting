@@ -26,8 +26,8 @@ class ProfileDetail extends StatelessWidget {
                       : Image.network(
                           "${user.backgroundImgUrl}",
                           fit: BoxFit.fill,
-                          width: authC.width + 20,
-                          height: authC.height,
+                          width: authC.width.value + 20,
+                          height: authC.height.value,
                         ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -47,7 +47,7 @@ class ProfileDetail extends StatelessWidget {
                     child: Column(
                       children: [
                         Padding(
-                            padding: EdgeInsets.only(top: authC.height * 0.7)),
+                            padding: EdgeInsets.only(top: Get.height * 0.7)),
                         authC.user.value.email == user.email
                             ? profileImage(authC.width * 0.3,
                                 round: 60.0,
@@ -58,11 +58,11 @@ class ProfileDetail extends StatelessWidget {
                                 image:
                                     "${user.photoUrl ?? "https://w.namu.la/s/c4b8eb1c9ea25c0e252b81e3aab503097fdd7a7ae00acdba6f86da4e46ad5e3629335e1022104c01db12954074159679a427e9d4f2e0519db064e4203dec3dc04fdbf124789ea8400b3e6793f77a221e"}"),
                         Padding(
-                            padding: EdgeInsets.only(top: authC.height * 0.02)),
+                            padding: EdgeInsets.only(top: Get.height * 0.02)),
                         fontM("${user.name}", fonts: "NeoB"),
                         fontS("${user.email}"),
                         Padding(
-                            padding: EdgeInsets.only(top: authC.height * 0.01)),
+                            padding: EdgeInsets.only(top: Get.height * 0.01)),
                         friendRecommend
                             ? AddFreindBtn(user.email)
                             : Container(),
@@ -72,7 +72,7 @@ class ProfileDetail extends StatelessWidget {
                                 children: [
                                   Container(
                                     width: authC.width * 0.5,
-                                    height: authC.height * 0.035,
+                                    height: Get.height * 0.035,
                                     child: TextFormField(
                                       autocorrect: false,
                                       textAlign: TextAlign.center,
@@ -104,15 +104,14 @@ class ProfileDetail extends StatelessWidget {
                   authC.user.value.email == user.email
                       ? Padding(
                           padding: EdgeInsets.only(
-                              top: authC.height * 0.8,
-                              left: authC.width * 0.58),
+                              top: Get.height * 0.8, left: authC.width * 0.58),
                           child: Camera(authC.width * 0.07, context),
                         )
                       : Container(),
                   // authC.user.value.email == user.email
                   //     ? Padding(
                   //         padding: EdgeInsets.only(
-                  //             bottom: authC.height * 0.02,
+                  //             bottom: Get.height * 0.02,
                   //             right: authC.width * 0.05),
                   //         child: Column(
                   //           mainAxisAlignment: MainAxisAlignment.end,

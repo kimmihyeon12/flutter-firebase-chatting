@@ -10,8 +10,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(MediaQuery.of(context).size);
-    print(MediaQuery.of(context).padding.top);
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,
@@ -163,7 +161,7 @@ class HomePage extends StatelessWidget {
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        height: authC.height,
+                        height: authC.height.value,
                         child: ListView.builder(
                             scrollDirection: Axis.vertical,
                             itemCount: authC.user.value.followUser?.length,

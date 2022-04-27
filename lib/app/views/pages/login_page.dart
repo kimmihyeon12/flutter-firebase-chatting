@@ -11,6 +11,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 
 class LoginPage extends StatelessWidget {
   final authC = AuthController.to;
+
   @override
   Widget build(BuildContext context) {
     authC.init(context);
