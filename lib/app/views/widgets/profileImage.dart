@@ -16,9 +16,10 @@ Widget profileImage(size, {image, round = 15.0}) {
               color: Colors.black.withOpacity(0.08),
               child: Image.network(
                 image,
-                fit: BoxFit.cover,
-                width: 100,
-                height: 100,
+                width: size,
+                height: size,
+                fit: BoxFit.fitHeight,
+                filterQuality: FilterQuality.low,
               )),
       //호리둥절
     ),

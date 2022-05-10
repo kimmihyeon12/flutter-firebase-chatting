@@ -1,10 +1,12 @@
 import 'package:chatting_app/app/controller/AuthController.dart';
 import 'package:chatting_app/app/controller/ChatController.dart';
+import 'package:chatting_app/app/data/model/friend_model.dart';
 import 'package:chatting_app/app/views/widgets/font.dart';
 import 'package:chatting_app/app/views/widgets/profileImage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ChatPage extends GetView<ChatController> {
   final authC = AuthController.to;
@@ -56,100 +58,138 @@ class ChatPage extends GetView<ChatController> {
                             return ListView.builder(
                                 itemCount: snapshot.data.length,
                                 itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: EdgeInsets.only(
-                                        top: authC.height * 0.01),
-                                    child: InkWell(
-                                      onTap: () {
-                                        authC.createFirebaseChatRoom(
-                                          snapshot.data[index]["friendEmail"],
-                                          snapshot.data[index]["friendName"],
-                                        );
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            width: authC.width * 0.65,
-                                            child: Row(
+                                  return Slidable(
+                                    // Specify a key if the Slidable is dismissible.
+                                    key: const ValueKey(0),
+
+                                    // The end action pane is the one at the right or the bottom side.
+                                    endActionPane: ActionPane(
+                                      motion: ScrollMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          // An action can be bigger than the others.
+
+                                          onPressed: null,
+                                          backgroundColor: Colors.white,
+                                          foregroundColor: Colors.white,
+                                          icon: Icons.archive,
+                                          label: 'Archive',
+                                        ),
+                                        SlidableAction(
+                                          onPressed: (ctx) => {
+                                            authC.userChatDelete(
+                                                snapshot.data?[index]["chatId"])
+                                          },
+                                          backgroundColor: Colors.red,
+                                          foregroundColor: Colors.white,
+                                          label: '삭제',
+                                        ),
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          top: authC.height * 0.01),
+                                      child: InkWell(
+                                        onTap: () {
+                                          print("snapshot.data[index]");
+                                          print(snapshot.data[index]);
+                                          authC.createFirebaseChatRoom(
+                                            FriendUsersModel.fromJson(
+                                                snapshot.data[index]),
+                                          );
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Container(
+                                              width: authC.width * 0.65,
+                                              child: Row(
+                                                children: [
+                                                  profileImage(
+                                                      authC.width * 0.15,
+                                                      image:
+                                                          snapshot.data[index]
+                                                              ["photoUrl"]),
+                                                  Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: authC.width *
+                                                              0.03)),
+                                                  Container(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        fontS(
+                                                            "${snapshot.data[index]["name"]}",
+                                                            color: 0xff000000,
+                                                            fonts: "NeoB"),
+                                                        Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    top: authC
+                                                                            .height *
+                                                                        0.002)),
+                                                        fontS(
+                                                            "${snapshot.data[index]["msg"] ?? "사진"}",
+                                                            color: 0xff707070),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
                                               children: [
-                                                profileImage(authC.width * 0.15,
-                                                    image:
-                                                        "${snapshot.data[index]["friendPhotoUrl"] ?? "https://w.namu.la/s/c4b8eb1c9ea25c0e252b81e3aab503097fdd7a7ae00acdba6f86da4e46ad5e3629335e1022104c01db12954074159679a427e9d4f2e0519db064e4203dec3dc04fdbf124789ea8400b3e6793f77a221e"}"),
+                                                fontS(
+                                                  "${snapshot.data[index]["time"]}",
+                                                  color: 0xff9a9a9a,
+                                                ),
                                                 Padding(
                                                     padding: EdgeInsets.only(
-                                                        left: authC.width *
-                                                            0.03)),
-                                                Container(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      fontS(
-                                                          "${snapshot.data[index]["friendName"]}",
-                                                          color: 0xff000000,
-                                                          fonts: "NeoB"),
-                                                      Padding(
-                                                          padding: EdgeInsets.only(
-                                                              top:
-                                                                  authC.height *
-                                                                      0.002)),
-                                                      fontS(
-                                                          "${snapshot.data[index]["msg"] ?? "사진"}",
-                                                          color: 0xff707070),
-                                                    ],
-                                                  ),
-                                                ),
+                                                        top: authC.height *
+                                                            0.002)),
+                                                snapshot.data[
+                                                                index]
+                                                            ["read_index"] ==
+                                                        0
+                                                    ? Text(" ")
+                                                    : Container(
+                                                        child: Container(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 6,
+                                                                    right: 6,
+                                                                    bottom: 3,
+                                                                    top: 1),
+                                                            child: fontSM(
+                                                                "${snapshot.data[index]["read_index"]}",
+                                                                color:
+                                                                    0xffffffff)),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                color: Color(
+                                                                    0xffff2057),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            50),
+                                                                //모서리를 둥글게
+                                                                border: Border.all(
+                                                                    color:
+                                                                        Color(0xffff2057),
+                                                                    width: 1))),
                                               ],
                                             ),
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              fontS(
-                                                "${snapshot.data[index]["time"]}",
-                                                color: 0xff9a9a9a,
-                                              ),
-                                              Padding(
-                                                  padding: EdgeInsets.only(
-                                                      top: authC.height *
-                                                          0.002)),
-                                              snapshot.data[index]
-                                                          ["read_index"] ==
-                                                      0
-                                                  ? Text(" ")
-                                                  : Container(
-                                                      child: Container(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 6,
-                                                                  right: 6,
-                                                                  bottom: 3,
-                                                                  top: 1),
-                                                          child: fontSM(
-                                                              "${snapshot.data[index]["read_index"]}",
-                                                              color:
-                                                                  0xffffffff)),
-                                                      decoration: BoxDecoration(
-                                                          color:
-                                                              Color(0xffff2057),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(50),
-                                                          //모서리를 둥글게
-                                                          border: Border.all(
-                                                              color: Color(
-                                                                  0xffff2057),
-                                                              width: 1))),
-                                            ],
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   );
+
                                   //}
                                 });
                           }

@@ -1,3 +1,4 @@
+import 'package:chatting_app/app/controller/AuthController.dart';
 import 'package:chatting_app/app/controller/CalenderController.dart';
 import 'package:chatting_app/app/views/widgets/font.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -5,13 +6,15 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 CalenderCreateModal(context, {id = null, time = null}) {
+  final authC = AuthController.to;
+  print(id);
   var controller = CalenderController.to;
   Get.dialog(
     AlertDialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(15.0))),
       content: Container(
-        height: Get.height * 0.365,
+        height: authC.height * 0.4,
         child: Column(
           children: [
             Center(
@@ -153,6 +156,12 @@ CalenderCreateModal(context, {id = null, time = null}) {
                           ? controller.updateCalender(id, time)
                           : controller.createCalendar();
                     }
+                  },
+                ),
+                InkWell(
+                  child: fontS("취소", fonts: "NeoB"),
+                  onTap: () {
+                    Get.back();
                   },
                 ),
               ],

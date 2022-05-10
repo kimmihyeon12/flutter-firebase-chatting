@@ -1,15 +1,11 @@
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:chatting_app/app/controller/AuthController.dart';
 import 'package:chatting_app/app/controller/CalenderController.dart';
 import 'package:chatting_app/app/views/widgets/calenderCreateModal.dart';
 import 'package:chatting_app/app/views/widgets/font.dart';
+import 'package:chatting_app/app/views/widgets/yesNodialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:collection';
-import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 // Example holidays
 final Map<DateTime, List> _holidays = {
@@ -21,8 +17,10 @@ final Map<DateTime, List> _holidays = {
 };
 
 class Calender extends GetView<CalenderController> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  final CalendarFormat _calendarFormat = CalendarFormat.month;
   final authC = AuthController.to;
+
+  Calender({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     controller.setEvent();
@@ -33,8 +31,8 @@ class Calender extends GetView<CalenderController> {
           onPressed: () {
             CalenderCreateModal(context);
           },
-          backgroundColor: Color(0xffFF728E),
-          child: Icon(
+          backgroundColor: const Color(0xffFF728E),
+          child: const Icon(
             Icons.add,
             size: 35,
           ),
@@ -59,7 +57,7 @@ class Calender extends GetView<CalenderController> {
                         padding: EdgeInsets.only(top: authC.height * 0.025),
                         child: Container(
                           width: authC.width * 0.88,
-                          height: authC.height * 0.36,
+                          height: authC.height * 0.41,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.all(
@@ -74,7 +72,7 @@ class Calender extends GetView<CalenderController> {
                                     fontSize: 13, fontFamily: "NeoB")),
                             locale: 'ko-KR',
                             daysOfWeekHeight: authC.height * 0.027,
-                            rowHeight: authC.height * 0.052,
+                            rowHeight: authC.height * 0.06,
                             calendarBuilders: CalendarBuilders(
                                 markerBuilder: (context, date, events) {
                               return events.isNotEmpty
@@ -178,74 +176,80 @@ class Calender extends GetView<CalenderController> {
                                   child: SingleChildScrollView(
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          fontL(
-                                              "${selectedDay.toString().split(" ")[0].split("-")[2]}일",
-                                              fonts: "NeoB"),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: controller
-                                                .getEventForDay(selectedDay)
-                                                .map((event) => Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            children: [
-                                                              fontS(
-                                                                  event["data"][
-                                                                          "title"]
-                                                                      .toString(),
-                                                                  color:
-                                                                      0xff0A0A0A,
-                                                                  fonts:
-                                                                      "NeoB"),
-                                                              Row(
-                                                                children: [
-                                                                  InkWell(
-                                                                    onTap: () {
-                                                                      //controller.deleteCalender();
-                                                                    },
-                                                                    child: fontSM(
-                                                                        " 수정",
+                                      child: Obx(
+                                        () => Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            fontL(
+                                                "${selectedDay.toString().split(" ")[0].split("-")[2]}일",
+                                                fonts: "NeoB"),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: controller
+                                                  .getEventForDay(selectedDay)
+                                                  .map<Widget>(
+                                                      (event) => Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    fontS(
+                                                                        event["data"]["title"]
+                                                                            .toString(),
                                                                         color:
-                                                                            0xff707070),
-                                                                  ),
-                                                                  InkWell(
-                                                                      onTap:
-                                                                          () {
-                                                                        //controller.deleteCalender();
-                                                                      },
-                                                                      child: fontSM(
-                                                                          " 삭제",
-                                                                          color:
-                                                                              0xff707070))
-                                                                ],
-                                                              )
-                                                            ],
-                                                          ),
-                                                          fontS(
-                                                              event["data"]
-                                                                  ["content"],
-                                                              color: 0xff707070)
-                                                        ],
-                                                      ),
-                                                    ))
-                                                .toList(),
-                                          ),
-                                        ],
+                                                                            0xff0A0A0A,
+                                                                        fonts:
+                                                                            "NeoB"),
+                                                                    Row(
+                                                                      children: [
+                                                                        InkWell(
+                                                                          onTap:
+                                                                              () {
+                                                                            CalenderCreateModal(context,
+                                                                                id: event["id"],
+                                                                                time: event["data"]["time"]);
+                                                                          },
+                                                                          child: fontSM(
+                                                                              " 수정",
+                                                                              color: 0xff707070),
+                                                                        ),
+                                                                        InkWell(
+                                                                            onTap:
+                                                                                () async {
+                                                                              var result = await YesNoDialog("삭제하시겠습니까?");
+                                                                              if (result)
+                                                                                controller.deleteCalender(event["id"], event["data"]["time"]);
+                                                                            },
+                                                                            child:
+                                                                                fontSM(" 삭제", color: 0xff707070)),
+                                                                      ],
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                fontS(
+                                                                    event["data"]
+                                                                        [
+                                                                        "content"],
+                                                                    color:
+                                                                        0xff707070)
+                                                              ],
+                                                            ),
+                                                          ))
+                                                  .toList(),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -283,7 +287,6 @@ class Calender extends GetView<CalenderController> {
                             {
                               for (var value in values)
                                 {
-                                  print(value["data"]),
                                   todayWidget.add(
                                     Padding(
                                       padding: EdgeInsets.only(top: 15),
@@ -366,30 +369,8 @@ class Calender extends GetView<CalenderController> {
                                                           InkWell(
                                                               onTap: () async {
                                                                 var result =
-                                                                    await Get
-                                                                        .dialog(
-                                                                  AlertDialog(
-                                                                    content:
-                                                                        const Text(
-                                                                            '정말 삭제하시겠습니까?'),
-                                                                    actions: [
-                                                                      TextButton(
-                                                                        child: const Text(
-                                                                            "확인"),
-                                                                        onPressed:
-                                                                            () =>
-                                                                                Get.back(result: true),
-                                                                      ),
-                                                                      TextButton(
-                                                                        child: const Text(
-                                                                            "취소"),
-                                                                        onPressed:
-                                                                            () =>
-                                                                                Get.back(result: false),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                );
+                                                                    await YesNoDialog(
+                                                                        "삭제하시겠습니까?");
                                                                 if (result)
                                                                   controller.deleteCalender(
                                                                       value[
@@ -406,10 +387,16 @@ class Calender extends GetView<CalenderController> {
                                                       )
                                                     ],
                                                   ),
-                                                  fontS(
-                                                      value["data"]["content"],
-                                                      fonts: "NeoL",
-                                                      color: 0xff707070),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left:
+                                                            authC.width * 0.06),
+                                                    child: fontS(
+                                                        value["data"]
+                                                            ["content"],
+                                                        fonts: "NeoL",
+                                                        color: 0xff707070),
+                                                  ),
                                                 ],
                                               ),
                                             ),

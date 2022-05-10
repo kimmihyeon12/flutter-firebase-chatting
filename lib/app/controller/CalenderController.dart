@@ -78,7 +78,10 @@ class CalenderController extends GetxController {
     });
     calender[DateTime(int.parse(timeResult[0]), int.parse(timeResult[1]),
         int.parse(timeResult[2]))] = copyData;
+    event[DateTime(int.parse(timeResult[0]), int.parse(timeResult[1]),
+        int.parse(timeResult[2]))] = copyData;
     calender.refresh();
+    event.refresh();
   }
 
   updateComplete(id, time, complete) async {
@@ -116,6 +119,7 @@ class CalenderController extends GetxController {
   }
 
   updateCalender(id, timepr) async {
+    print("updateCalender");
     loading(true);
 
     var data = {
@@ -142,9 +146,13 @@ class CalenderController extends GetxController {
         copyData.add({"data": data, "id": id});
       }
     });
+
     calender[DateTime(int.parse(timeResult[0]), int.parse(timeResult[1]),
         int.parse(timeResult[2]))] = copyData;
+    event[DateTime(int.parse(timeResult[0]), int.parse(timeResult[1]),
+        int.parse(timeResult[2]))] = copyData;
     calender.refresh();
+    event.refresh();
     title.clear();
     content.clear();
     loading(false);
@@ -152,7 +160,6 @@ class CalenderController extends GetxController {
   }
 
   addCalender(time, data) {
-    print(time);
     if (calender.containsKey(
         DateTime(int.parse(time[0]), int.parse(time[1]), int.parse(time[2])))) {
       calender[DateTime(

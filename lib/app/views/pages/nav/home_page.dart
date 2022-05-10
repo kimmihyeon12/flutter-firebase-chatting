@@ -3,6 +3,8 @@ import 'package:chatting_app/app/routers/app_routes.dart';
 import 'package:chatting_app/app/views/widgets/font.dart';
 import 'package:chatting_app/app/views/widgets/profileImage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatelessWidget {
@@ -21,7 +23,14 @@ class HomePage extends StatelessWidget {
                 onTap: () {
                   Get.toNamed(Routes.MYPAGE);
                 },
-                child: Image.asset("assets/add-btn.png"),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: SvgPicture.asset(
+                    "assets/user-gear-solid.svg",
+                    height: authC.height * 0.03,
+                    color: Color(0xffc7c7c7),
+                  ),
+                ),
               )
             ],
             backgroundColor: Colors.white,
@@ -53,10 +62,19 @@ class HomePage extends StatelessWidget {
                             onTap: () {
                               Get.toNamed(Routes.ADDUSER);
                             },
-                            child: Image.asset(
-                              "assets/user-add.png",
-                              width: authC.width * 0.13,
-                            ),
+                            child: Container(
+                                width: authC.width * 0.13,
+                                height: authC.width * 0.13,
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    "assets/plus-solid.svg",
+                                    height: authC.height * 0.03,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                    color: Color(0xffEBEBEB),
+                                    borderRadius: BorderRadius.circular(15))),
                           ),
                         ),
                         Obx(
@@ -80,8 +98,8 @@ class HomePage extends StatelessWidget {
                                             });
                                       },
                                       child: profileImage(authC.width * 0.13,
-                                          image:
-                                              "${authC.recommendUserList[index].photoUrl ?? "https://w.namu.la/s/c4b8eb1c9ea25c0e252b81e3aab503097fdd7a7ae00acdba6f86da4e46ad5e3629335e1022104c01db12954074159679a427e9d4f2e0519db064e4203dec3dc04fdbf124789ea8400b3e6793f77a221e"}"),
+                                          image: authC.recommendUserList[index]
+                                              .prvPhotoUrl),
                                     ),
                                   );
                                 }),
@@ -113,7 +131,7 @@ class HomePage extends StatelessWidget {
                                   arguments: {"user": authC.user.value});
                             },
                             child: profileImage(authC.width * 0.15,
-                                image: authC.user.value.photoUrl!),
+                                image: authC.user.value.prvPhotoUrl),
                           ),
                           Padding(
                               padding:
@@ -133,8 +151,8 @@ class HomePage extends StatelessWidget {
                                   child: fontS(authC.user.value.status!,
                                       color: 0xffffffff),
                                 ),
-                                constraints:
-                                    BoxConstraints(maxWidth: authC.width * 0.6),
+                                // constraints:
+                                //     BoxConstraints(maxWidth: authC.width * 0.6),
                                 decoration: BoxDecoration(
                                     color: Color(0xffc7c7c7),
                                     borderRadius: BorderRadius.circular(30)),
@@ -166,89 +184,115 @@ class HomePage extends StatelessWidget {
                             scrollDirection: Axis.vertical,
                             itemCount: authC.user.value.followUser?.length,
                             itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding:
-                                    EdgeInsets.only(top: authC.height * 0.01),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
+                              print(authC.user.value.followUser?[index]);
+                              return Slidable(
+                                  // Specify a key if the Slidable is dismissible.
+                                  key: const ValueKey(0),
+
+                                  // The end action pane is the one at the right or the bottom side.
+                                  endActionPane: ActionPane(
+                                    motion: ScrollMotion(),
+                                    children: [
+                                      SlidableAction(
+                                        onPressed: null,
+                                        backgroundColor: Colors.white,
+                                        foregroundColor: Colors.white,
+                                        icon: Icons.archive,
+                                        label: 'Archive',
+                                      ),
+                                      SlidableAction(
+                                        onPressed: (ctx) => {
+                                          authC.createUnfollowUser(authC.user
+                                              .value.followUser?[index].email)
+                                        },
+                                        backgroundColor: Colors.red,
+                                        foregroundColor: Colors.white,
+                                        label: '차단',
+                                      ),
+                                    ],
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        top: authC.height * 0.01),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Get.toNamed(Routes.PRORILEDETAIL,
-                                                arguments: {
-                                                  "user": authC.user.value
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                Get.toNamed(
+                                                    Routes.PRORILEDETAIL,
+                                                    arguments: {
+                                                      "user": authC.user.value
+                                                          .followUser?[index]
+                                                    });
+                                              },
+                                              child: profileImage(
+                                                  authC.width * 0.12,
+                                                  image: authC
+                                                      .user
+                                                      .value
                                                       .followUser?[index]
-                                                });
-                                          },
-                                          child: profileImage(
-                                              authC.width * 0.12,
-                                              image:
-                                                  "${authC.user.value.followUser?[index].photoUrl ?? "https://w.namu.la/s/c4b8eb1c9ea25c0e252b81e3aab503097fdd7a7ae00acdba6f86da4e46ad5e3629335e1022104c01db12954074159679a427e9d4f2e0519db064e4203dec3dc04fdbf124789ea8400b3e6793f77a221e"}"),
-                                        ),
-                                        Padding(
-                                            padding: EdgeInsets.only(
-                                                left: authC.width * 0.03)),
-                                        InkWell(
-                                          onTap: () {
-                                            authC.createFirebaseChatRoom(
-                                                authC.user.value
-                                                    .followUser?[index].email,
-                                                authC.user.value
-                                                    .followUser?[index].name);
-                                          },
-                                          child: Container(
-                                            height: authC.height * 0.05,
-                                            width: authC.width * 0.5,
-                                            child: Center(
-                                              child: Row(
-                                                children: [
-                                                  fontS(
-                                                      "${authC.user.value.followUser?[index].name}",
-                                                      color: 0xff707070),
-                                                ],
+                                                      .prvPhotoUrl),
+                                            ),
+                                            Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: authC.width * 0.03)),
+                                            InkWell(
+                                              onTap: () {
+                                                authC.createFirebaseChatRoom(
+                                                    authC.user.value
+                                                        .followUser?[index]);
+                                              },
+                                              child: Container(
+                                                height: authC.height * 0.05,
+                                                width: authC.width * 0.5,
+                                                child: Center(
+                                                  child: Row(
+                                                    children: [
+                                                      fontS(
+                                                          "${authC.user.value.followUser?[index].name}",
+                                                          color: 0xff707070),
+                                                    ],
+                                                  ),
+                                                ),
                                               ),
                                             ),
-                                          ),
+                                          ],
                                         ),
+                                        authC.user.value.followUser?[index]
+                                                    .status! ==
+                                                ""
+                                            ? Container()
+                                            : Padding(
+                                                padding: EdgeInsets.only(
+                                                    right: authC.width * 0.02),
+                                                child: Container(
+                                                  child: Padding(
+                                                    padding: EdgeInsets.only(
+                                                        left: 10,
+                                                        right: 10,
+                                                        bottom: 5,
+                                                        top: 2),
+                                                    child: fontS(
+                                                        '${authC.user.value.followUser?[index].status!}',
+                                                        color: 0xffffffff),
+                                                  ),
+                                                  constraints: BoxConstraints(
+                                                      maxWidth:
+                                                          authC.width * 0.6),
+                                                  decoration: BoxDecoration(
+                                                      color: Color(0xffc7c7c7),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              30)),
+                                                ),
+                                              ),
                                       ],
                                     ),
-                                    authC.user.value.followUser?[index]
-                                                .status! ==
-                                            ""
-                                        ? Container()
-                                        : Padding(
-                                            padding: EdgeInsets.only(
-                                                right: authC.width * 0.02),
-                                            child: Container(
-                                              child: Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 10,
-                                                    right: 10,
-                                                    bottom: 5,
-                                                    top: 2),
-                                                child: fontS(
-                                                    authC
-                                                        .user
-                                                        .value
-                                                        .followUser?[index]
-                                                        .status!,
-                                                    color: 0xffffffff),
-                                              ),
-                                              constraints: BoxConstraints(
-                                                  maxWidth: authC.width * 0.6),
-                                              decoration: BoxDecoration(
-                                                  color: Color(0xffc7c7c7),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          30)),
-                                            ),
-                                          ),
-                                  ],
-                                ),
-                              );
+                                  ));
                             }),
                       ),
                     ],

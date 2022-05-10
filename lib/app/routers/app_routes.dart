@@ -5,7 +5,7 @@ abstract class Routes {
   static const ADDUSER = _Paths.ADDUSER;
   static const CHATROOM = _Paths.CHATROOM;
   static const PRORILEDETAIL = _Paths.PRORILEDETAIL;
-  static const IMGPREVIEW = _Paths.IMGPREVIEW;
+  static const IMGDETAIL = _Paths.IMGDETAIL;
   static const MYPAGE = _Paths.MYPAGE;
 }
 
@@ -16,6 +16,6 @@ abstract class _Paths {
   static const ADDUSER = '/add';
   static const CHATROOM = '/chatroom';
   static const PRORILEDETAIL = "/profiledetail";
-  static const IMGPREVIEW = "/imgpreview";
+  static const IMGDETAIL = "/imgdetail";
   static const MYPAGE = "/mypage";
 }

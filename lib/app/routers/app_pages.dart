@@ -6,7 +6,7 @@ import 'package:chatting_app/app/views/pages/nav/add_user_page.dart';
 import 'package:chatting_app/app/views/pages/nav/chat_room_page.dart';
 import 'package:chatting_app/app/views/pages/introduction_page.dart';
 import 'package:chatting_app/app/views/pages/login_page.dart';
-import 'package:chatting_app/app/views/pages/nav/imgPreview.dart';
+import 'package:chatting_app/app/views/pages/nav/imgDetail.dart';
 import 'package:chatting_app/app/views/pages/nav/my_page.dart';
 import 'package:chatting_app/app/views/pages/nav/nav_page.dart';
 import 'package:chatting_app/app/views/pages/nav/profileDetail.dart';
@@ -44,8 +44,8 @@ class AppPages {
       page: () => ProfileDetail(),
     ),
     GetPage(
-      name: Routes.IMGPREVIEW,
-      page: () => ImagePreview(),
+      name: Routes.IMGDETAIL,
+      page: () => ImageDetail(),
     ),
     GetPage(
       name: Routes.MYPAGE,

@@ -17,7 +17,6 @@ class ChatRoomPage extends GetView<ChatController> {
 
   @override
   Widget build(BuildContext context) {
-    print(argument);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -27,6 +26,9 @@ class ChatRoomPage extends GetView<ChatController> {
           padding: EdgeInsets.only(top: 5),
           child: IconButton(
               onPressed: () {
+                print(argument);
+                controller.getOutChat(
+                    authC.user.value.email.toString(), argument);
                 Navigator.pop(context); //뒤로가기
               },
               color: Colors.grey,
@@ -37,7 +39,7 @@ class ChatRoomPage extends GetView<ChatController> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              fontM("${argument["friendName"]}",
+              fontM("${argument["friendData"].name}",
                   fonts: "NeoB", color: 0xff707070),
               fontM("님과의 채팅", color: 0xff707070),
             ],
@@ -48,97 +50,144 @@ class ChatRoomPage extends GetView<ChatController> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Stack(
-              children: [
-                Image.asset("assets/chat-bg.png",
-                    width: authC.width.value,
-                    height: authC.height * 0.812,
-                    fit: BoxFit.fill),
-                Container(
-                  height: authC.height * 0.81,
-                  width: Get.width,
-                  child: StreamBuilder<DocumentSnapshot>(
-                    stream: controller.streamChats(argument["chat_id"]),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasData) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.active) {
-                          var alldata;
-                          try {
-                            alldata = snapshot.data?['chat'];
-                            Timer(
-                              Duration.zero,
-                              () => controller.scrollC.jumpTo(
-                                  controller.scrollC.position.maxScrollExtent),
-                            );
-                          } catch (e) {
-                            alldata = null;
-                          }
+            Obx(
+              () => Stack(
+                children: [
+                  Image.asset("assets/chat-bg.png",
+                      width: authC.width.value,
+                      height: authC.height * 0.812,
+                      fit: BoxFit.fill),
+                  FutureBuilder(
+                      future: authC.getOutOfIndex(argument["chat_id"]),
+                      builder:
+                          (BuildContext context, AsyncSnapshot getOutOfIndex) {
+                        if (!getOutOfIndex.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        } else {
+                          return Container(
+                            height: authC.height * 0.81,
+                            width: Get.width,
+                            child: StreamBuilder<DocumentSnapshot>(
+                              stream:
+                                  controller.streamChats(argument["chat_id"]),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                }
+                                if (snapshot.hasData) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.active) {
+                                    var alldata;
+                                    try {
+                                      alldata = snapshot.data?['chat'];
+                                      print(getOutOfIndex.data);
+                                      print(alldata.length);
+                                      alldata = alldata.sublist(
+                                          getOutOfIndex.data, alldata.length);
 
-                          print('alldata $alldata');
-                          var groupTime = "";
+                                      alldata = List.from((alldata.reversed));
 
-                          return alldata != null
-                              ? Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  child: ListView.builder(
-                                      // 리스트뷰의 스크롤 방향을 반대로 변경. 최신 메시지가 하단에 추가
-                                      // reverse: true,
-                                      controller: controller.scrollC,
-                                      itemCount: alldata.length,
-                                      itemBuilder: (context, index) {
-                                        return Column(
-                                          children: [
-                                            (() {
-                                              bool result = false;
-                                              if (groupTime !=
-                                                  alldata[index]["groupTime"]) {
-                                                result = true;
-                                                groupTime =
-                                                    alldata[index]["groupTime"];
-                                              }
-                                              return result
-                                                  ? Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical:
-                                                                  authC.height *
-                                                                      0.01),
-                                                      child: fontS(
-                                                          "${alldata[index]["groupTime"]}"),
-                                                    )
-                                                  : Container();
-                                            })(),
-                                            ChatMessage(
-                                              img: "${alldata[index]["img"]}",
-                                              msg: "${alldata[index]["msg"]}",
-                                              isSender: alldata[index]
-                                                          ["sender"] ==
-                                                      authC.user.value.email!
-                                                  ? true
-                                                  : false,
-                                              time: "${alldata[index]["time"]}",
-                                            ),
-                                          ],
-                                        );
-                                      }),
-                                )
-                              : Container();
+                                      // Timer(
+                                      //   Duration.zero,
+                                      //   () => controller.scrollC.jumpTo(
+                                      //       controller.scrollC.position.maxScrollExtent),
+                                      // );
+                                    } catch (e) {
+                                      alldata = null;
+                                    }
+
+                                    var groupTime = "";
+                                    var showTime = "";
+                                    return alldata != null
+                                        ? Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: ListView.builder(
+                                                // 리스트뷰의 스크롤 방향을 반대로 변경. 최신 메시지가 하단에 추가
+                                                reverse: true,
+                                                controller: controller.scrollC,
+                                                itemCount: alldata.length,
+                                                itemBuilder: (context, index) {
+                                                  return Column(
+                                                    children: [
+                                                      // (() {
+                                                      //   bool result = false;
+                                                      //   if (index == 0) {
+                                                      //     groupTime = alldata[index]
+                                                      //         ["groupTime"];
+                                                      //   } else {
+                                                      //     if (alldata[index]
+                                                      //             ["groupTime"] !=
+                                                      //         groupTime) {
+                                                      //       result = true;
+                                                      //       groupTime = alldata[index]
+                                                      //           ["groupTime"];
+                                                      //     }
+                                                      //   }
+
+                                                      //   return result
+                                                      //       ? Padding(
+                                                      //           padding: EdgeInsets
+                                                      //               .symmetric(
+                                                      //                   vertical: authC
+                                                      //                           .height *
+                                                      //                       0.01),
+                                                      //           child: fontS(
+                                                      //               "${alldata[index - 1]["groupTime"]}"),
+                                                      //         )
+                                                      //       : Container();
+                                                      // })(),
+                                                      ChatMessage(
+                                                        index: index,
+                                                        friendData: argument[
+                                                            "friendData"],
+                                                        img:
+                                                            "${alldata[index]["img"]}",
+                                                        prvImg:
+                                                            "${alldata[index]["prvImg"]}",
+                                                        msg:
+                                                            "${alldata[index]["msg"]}",
+                                                        isSender: alldata[index]
+                                                                    [
+                                                                    "sender"] ==
+                                                                authC.user.value
+                                                                    .email!
+                                                            ? true
+                                                            : false,
+                                                        time:
+                                                            "${alldata[index]["time"]}",
+                                                      )
+                                                    ],
+                                                  );
+                                                }),
+                                          )
+                                        : Container();
+                                  }
+                                } else {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                }
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              },
+                            ),
+                          );
                         }
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      return Center(child: CircularProgressIndicator());
-                    },
-                  ),
-                ),
-              ],
+                      }),
+                  controller.isLoading.value
+                      ? Container(
+                          height: Get.height,
+                          width: Get.width,
+                          color: Colors.black38,
+                          child: Center(
+                              child: CircularProgressIndicator(
+                                  color: Colors.pinkAccent)))
+                      : Container()
+                ],
+              ),
             ),
-            Padding(padding: EdgeInsets.only(top: authC.height * 0.025)),
+            Padding(padding: EdgeInsets.only(top: authC.height * 0.015)),
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -160,7 +209,9 @@ class ChatRoomPage extends GetView<ChatController> {
                                           title: fontS('갤러리'),
                                           onTap: () async {
                                             controller.chatImage(
-                                                "gallery", argument);
+                                                authC.user.value.email!,
+                                                "gallery",
+                                                argument);
                                             Navigator.of(context).pop();
                                           }),
                                       ListTile(
@@ -171,7 +222,9 @@ class ChatRoomPage extends GetView<ChatController> {
                                           title: fontS('카메라'),
                                           onTap: () async {
                                             controller.chatImage(
-                                                "camera", argument);
+                                                authC.user.value.email!,
+                                                "camera",
+                                                argument);
                                             Navigator.of(context).pop();
                                           }),
                                       ListTile(

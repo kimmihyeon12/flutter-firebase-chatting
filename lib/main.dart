@@ -1,5 +1,5 @@
 import 'package:chatting_app/app/routers/app_pages.dart';
-import 'package:chatting_app/app/utils/splash_screen.dart';
+import 'package:chatting_app/app/views/pages/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,9 +41,6 @@ class MyApp extends StatelessWidget {
               title: "chatApp",
               theme: ThemeData(
                 brightness: Brightness.light,
-                primaryColor: Colors.white,
-                accentColor: Colors.black,
-                buttonColor: Colors.red[900],
               ),
               initialRoute: authC.isSkipIntro.isTrue
                   ? authC.isAutoLogin.isTrue

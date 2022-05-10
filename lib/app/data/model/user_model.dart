@@ -14,6 +14,7 @@ class UsersModel {
     this.creationTime,
     this.lastSignInTime,
     this.photoUrl,
+    this.prvPhotoUrl,
     this.backgroundImgUrl,
     this.status,
     this.updatedTime,
@@ -28,6 +29,7 @@ class UsersModel {
   String? creationTime;
   String? lastSignInTime;
   String? photoUrl;
+  String? prvPhotoUrl;
   String? backgroundImgUrl;
   String? status;
   String? updatedTime;
@@ -41,6 +43,7 @@ class UsersModel {
         email: json["email"],
         creationTime: json["creationTime"],
         lastSignInTime: json["lastSignInTime"],
+        prvPhotoUrl: json["prvPhotoUrl"],
         photoUrl: json["photoUrl"],
         backgroundImgUrl: json["backgroundImgUrl"],
         status: json["status"],
@@ -55,6 +58,7 @@ class UsersModel {
         "creationTime": creationTime,
         "lastSignInTime": lastSignInTime,
         "photoUrl": photoUrl,
+        "prvPhotoUrl": prvPhotoUrl,
         "backgroundImgUrl": backgroundImgUrl,
         "status": status,
         "updatedTime": updatedTime,

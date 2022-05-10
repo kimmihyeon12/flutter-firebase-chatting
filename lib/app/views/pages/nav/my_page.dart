@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class Mypage extends StatelessWidget {
   final authC = AuthController.to;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,6 +18,11 @@ class Mypage extends StatelessWidget {
                 authC.logout();
               },
               child: fontS("로그아웃")),
+          InkWell(
+              onTap: () {
+                authC.withdrawal(authC.user.value.email);
+              },
+              child: fontS("회원탈퇴")),
         ],
       ),
     );
